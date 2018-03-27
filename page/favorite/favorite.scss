@@ -1,0 +1,48 @@
+.favorite-info{
+    height: 265px;
+
+    .favorite-pic,.favorite-info {
+        float: left;
+        margin: 20px;
+    }
+    .favorite-pic {
+        width: 200px;
+        height: 200px;
+        background: url(../../assest/img/icon/favorite.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .favorite-data {
+        width: 60%;
+    }
+}
+.favorite-list{
+    table {
+        width: 100%;
+        text-align: left;
+
+        td,th {
+            padding: 6px;
+            text-indent: 10px;
+        }
+        td {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        th{
+            .th-id {
+                width: 10%;
+            } 
+            .th-song {
+                width: 35%;
+            }           
+            .th-singer {
+                width: 25%;
+            }          
+            .th-album {
+                width: 30%;
+            }
+        }
+    }
+}

@@ -31,9 +31,8 @@ var ui=require(["ui"],function(ui){
         if ($(this).getParent(2).index() == 1) index += 4;
         var page = $('.page').eq(index);
         var type=page.attr('class').split(' ')[1].replace(/\w*-/g,'');
-        console.log(type);
         var url= '../../page/'+type+'/'+type+'.html';
-        page.load(url);
+        if(type!='N') page.load(url);
         page.addClass('active');
     });
     $('.tab_item').click(function () {

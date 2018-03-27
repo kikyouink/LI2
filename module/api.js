@@ -4,12 +4,12 @@ define("api",function(){
 		var num=this.length;
 		var index=this.indexOf(value);
 		return (index+1==num)?this[0]:this[index+1];
-	  }
+	  };
 	  Array.prototype.findPrev = function (value) {
 		  var num=this.length;
 		  var index=this.indexOf(value);
 		  return (index-1<0)?this[num-1]:this[index-1];
-	  }
+	  };
 	  Array.prototype.findRandom = function () {
 		  var num=this.length;
 		  var item=parseInt(Math.random()*num);
