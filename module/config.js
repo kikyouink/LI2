@@ -1,0 +1,10 @@
+require.config({
+    paths:{
+        "ui":'ui',
+        "media":"media",
+        "storage":"storage",
+        "api":"api",
+        "net":"net",
+        "theme":"theme",
+    }
+});

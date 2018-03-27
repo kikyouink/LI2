@@ -1,0 +1,139 @@
+
+#container {
+	color: rgba(255,255,255,0.8);
+
+	button {
+		border: 5px solid rgba(255,255,255,0.2);
+		background: none;
+		color: white;
+	}
+	button:hover {
+		background-color: rgba(0,0,0,0.2);
+	}
+	button[disabled] {
+		background-color: rgba(255,255,255,0.4);
+	}
+}
+
+#header {
+	
+}
+
+#main{
+	#slideBar{
+		.slideBar_item {
+			color: rgba(255,255,255,0.6);
+
+			&.active,&::hover{
+				background: rgba(0,0,0,0.1);
+			}
+			.iconfont{
+				color: rgba(255,255,255,0.6);
+			}
+		}
+		.music-name {
+			color: white;
+		}
+		.singer {
+			color: rgba(255,255,255,0.6);
+		}
+	}
+	#info {
+		background: none;
+
+		.page.N {
+			color: rgba(255,255,255,0.8);
+		}
+		.btn-list{
+			a{
+				background-color: rgba(255,255,255,0.6);
+	
+				&.blue {
+					background: white !important;
+				}
+			}
+		}
+		.uc,.mv {
+			border: 5px solid rgba(255,255,255,0.2);
+		}
+		.favorite-pic {
+			border: 7px solid rgba(255,255,255,0.2);
+		}
+		table {
+			color: rgba(255,255,255,0.6);
+		}
+		tr:hover {
+			background: rgba(0,0,0,0.1);
+		}
+		th {
+			border-bottom: 1px solid rgba(255,255,255,0.1);
+		}
+		.segment{
+			a{
+				border-color: rgba(255,255,255,0.6);
+
+				&:hover,&.active{
+					background: rgba(0,0,0,0.2);
+					color: rgba(255,255,255,0.8);
+				}
+			}
+		}
+	}
+}
+
+#footer {
+	background: none;
+
+	.iconfont {
+		color: white;
+	}
+	.progress {
+		background-color: rgba(255,255,255,0.6);
+	}
+	input[type=range]::-webkit-slider-runnable-track {
+		background: rgba(255,255,255,0.8);
+	}
+}
+
+#musicInterface,#videoInterface{
+	.iconfont{
+		color: white;
+	}
+}
+
+#musicInterface{
+	.comment{
+		border-color: rgba(255,255,255,0.1);
+		border-style: solid;
+	}
+	.comment-input{
+		border: 10px solid rgba(0,0,0,0.2);
+	}
+}
+
+#LSmask{
+	.front {
+		border: 5px solid rgba(255,255,255,0.3);
+
+		.LSlogo {
+			color: rgba(255,255,255,0.8);
+		}
+		.tab_item {
+			color: rgba(255,255,255,0.6);
+	
+			&:hover{
+				color: rgba(255,255,255,0.8);
+			}
+			&.active{
+				color:white;
+			}
+		}
+		.slider {
+			background: rgba(255,255,255,0.8);
+		}
+		input {
+			background-color: rgba(255,255,255,0.2) !important;
+			color: rgba(255,255,255,1);
+		}
+	}
+}

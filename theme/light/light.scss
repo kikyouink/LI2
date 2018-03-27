@@ -1,0 +1,136 @@
+html,body {
+	background-color: #eff4f8;
+	color: #424e67;
+}
+#container {
+	color: gray;
+	
+	button {
+		background-color: #337ab7;
+		color: white;
+	}
+	button:hover {
+		background-color: #286090;
+	}
+	button:active {
+		background-color: #337ab7;
+	}
+	button[disabled] {
+		background-color: #85b4dd;
+	}
+	input{
+		background-color: #e4e9ec;
+	}
+	input[type=range]::-webkit-slider-runnable-track {
+		height: 3px;
+		background: darkgray;
+	}
+	.background {
+		background-color: rgb(250,250,250);
+	}
+}
+
+#header{
+	color: white;
+}
+
+#main{
+	#slideBar {
+		border-right: 1px solid #d8dfea;
+
+		.slideBar_item {
+			color: gray;
+			&.actibe,&:hover{
+				background: #e4e9ec;
+			}
+		}
+		.playing-box {
+			border-top: 1px solid #d8dfea;
+		}
+	}
+	#info {
+		background: rgb(250,250,250);
+
+		.page.N {
+			color: #424e67;
+		}
+		.btn-list{
+			a{
+				background-color: gray;
+
+				&.blue {
+					background: #3b8cff !important;
+				}
+			}
+		}
+		.uc,.mv {
+			border: 1px solid rgb(218,208,208);
+			color: white;
+		}
+		.favorite-pic {
+			border: 7px solid rgb(218,208,208);
+		}
+		tr:hover {
+			background: rgb(227,227,229);
+		}
+		th {
+			border-bottom: 1px solid gray;
+		}
+		.segment{
+			a{
+				border-color: rgb(124,125,133);
+
+				&:hover{
+					background:rgb(245,245,247);
+				}
+				&.active{
+					background: gray;
+					color: white;
+				}
+			}
+		}
+	}
+}
+
+#footer{
+	border-top: 1px solid #d8dfea;
+
+	.progress {
+		background: darkgray;
+	}
+}
+
+#musicInterface ,#videoInterface {
+	background-color: rgb(250,250,250);
+
+	.mediabox {
+		color: #424e67;
+	}
+}
+
+#musicInterface{
+	.comment{
+		border-color: rgb(218,208,208);
+		border-style: solid;
+	}
+	
+	.comment-input{
+		border: 10px solid rgb(240,240,242);
+	}
+}
+#LSmask{
+	.front,.behind {
+		background: white;
+		color: #424e67;
+	}
+	.front{
+		.tab_item{
+			&.active,&:hover{
+				color: #3b8cff;
+			}
+		}
+		.slider{
+			background-color: #3b8cff;
+		}
+	}
+}

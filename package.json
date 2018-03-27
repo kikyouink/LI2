@@ -1,0 +1,32 @@
+{
+  "name": "li",
+  "version": "2.0.0",
+  "description": "hello",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.2.1"
+  },
+  "devDependencies": {
+    "amd-optimize": "^0.6.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-requirejs": "^1.1.1",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/q2578443177/LI.git"
+  },
+  "author": "sai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/q2578443177/LI/issues"
+  },
+  "homepage": "https://github.com/q2578443177/LI#readme"
+}
