@@ -1,22 +1,7 @@
 <?php
-    header('Access-Control-Allow-Origin:*');  
-    header('Access-Control-Allow-Methods:POST');  
-	header('Access-Control-Allow-Headers:x-requested-with,content-type');  
+	//连接数据库
+	include 'mysql.php';
 	
-	session_start();
-
-    $servername = "localhost:3306";
-    $username = "root";
-    $password = "123456";
-    $dbname = "linka";
-     // 创建连接
-    $conn = mysqli_connect($servername, $username, $password,$dbname);
-
-    // 检测连接
-    if (!$conn) {
-        die("连接失败: " . mysqli_connect_error());
-    }
-   
 	@$name=$_POST['username'];
 	@$words=$_POST['password'];
 	@$type=$_POST['type'];
@@ -37,22 +22,6 @@
 	}
 	//注册
 	else{
-		$create = "create table if not exists user (
-			id int(6) unsigned auto_increment primary key, 
-			name varchar(30) not null,
-			nickname varchar(30),
-			password varchar(50) not null,
-			reg_date timestamp
-		)";
-
-		if (mysqli_query($conn, $create)) {
-			// echo "数据表 user 创建成功";
-		} 
-		// else {
-		//     echo "创建数据表错误: " . mysqli_error($conn);
-		// }
-		@$name=$_POST['username'];
-		@$words=$_POST['password'];
 		//查询用户名是否存在
 		$result = mysqli_query($conn,"select * from user where name = '$name'");
 		$row = mysqli_fetch_array($result);

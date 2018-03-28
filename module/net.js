@@ -1,11 +1,15 @@
 define("net",["ui","storage"],function(ui,storage) {
     var net= {
         lsUrl:'../../server/ls.php',
+        musicUrl:'../../server/music.php',
         assestUrl:'../../server/assest.php',
         init:function(){
             console.log('接受数据中...');
             var username=storage.cookie.get('username');
             if(username) $('.user-name').text(username);
+            $.post(this.musicUrl,function(){
+                console.log('已执行');
+            });
         },
         checkReg: function (obj, mode) {
             for (var i in obj) {
