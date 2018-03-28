@@ -132,45 +132,58 @@ var media=require(["media"],function(media){
 });
 
 //通信模块
-var net=require(["net","ui"],function(net,ui){
+var net=require(["net","ui","storage"],function(net,ui,storage){
+    net.init();
     //点击弹出登录界面
     $('.user').click(function () {
         var bool = net.checkLogin();
-        if (!bool) {
-            ui.LS.show();
-        }
+        if (!bool) ui.LS.show();
     });
     //提交数据
     $('.sumbit').click(function () {
-        //设置禁用->防止多次提交
         var that = $(this);
         var text = that.text();
-        that.attr('disabled', 'true').text('提交中...');
         var username = that.siblings('.username').val();
         var password = that.siblings('.password').val();
         var userInfo = {
             username: username,
-            password: password
+            password: password,
         };
-        function callback() {
+
+        //失败是成功之母，所以要放前面
+        function err(prompt) {
+            ui.showAlert(prompt);
+            $('.formGroup').clear();
             that.removeAttr('disabled').text(text);
         }
-        //先检查正则相关问题，根据返回值进行相应处理
-        var result = net.checkReg(userInfo);
-        switch (result) {
-            case 0: ui.showAlert('用户名及密码不能为空', callback); break;
-            case 1: ui.showAlert('用户名及密码均需6-15位以内', callback); break;
-            case true: ui.showAlert('用户名需为字母数字组合', callback); break;
-            case false:
-                if (text == '注册') net.sign(userInfo, callback);
-                else net.login(userInfo, callback);
-                break;
+        function suc(prompt){
+            $('.behind p').text(prompt);
+            $('.user-name').text(userInfo.username);
+            ui.LS.preserve(function () {
+                ui.LS.hide();
+            });
+            storage.cookie.set('username',userInfo.username,7);
         }
+        
+        //直到获取数据之前，按钮不可响应
+        that.attr('disabled', 'true').text('提交中...');
+        if(text=='注册') userInfo.type='sign';
+        else userInfo.type='login';
+
+        //先检查正则相关问题，根据返回值进行相应处理
+        setTimeout(function(){
+            var prompt;
+            var reg = net.checkReg(userInfo);
+            switch (reg) {
+                case 'null': prompt='用户名及密码不能为空'; break;
+                case "length illegal": prompt='用户名及密码均需6-15位以内'; break;
+                case 'entry illegal': prompt='用户名需为字母数字组合'; break;
+                case 'legal':net.ls(userInfo,suc,err);break;
+            }
+            if(reg!='legal') err(prompt);
+        }, 750);
     });
 });
-
-//存储模块
-var storage=require(["storage"]);
 
 //主题模块
 var theme=require(["theme"],function(theme){

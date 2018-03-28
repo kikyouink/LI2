@@ -25,11 +25,14 @@
 		$result = mysqli_query($conn,"select * from user where name = '$name' ");
 		$row = mysqli_fetch_array($result);
 		if(mysqli_num_rows($result) == 0){
-			echo '用户名不存在';
+			echo 'user not exsits';
 		}
 		else{
-			if($words==$row['password']) echo '登录成功';
-			else echo '密码错误';
+			if($words==$row['password']){
+				$_SESSION['user']=$name;
+				echo 'login succeed';
+			}
+			else echo 'password error';
 		}
 	}
 	//注册
@@ -54,14 +57,14 @@
 		$result = mysqli_query($conn,"select * from user where name = '$name'");
 		$row = mysqli_fetch_array($result);
 		if(mysqli_num_rows($result) > 0){
-			echo '用户名已注册，请登录';
+			echo 'user exsits';
 		}
 		else{
 			$insert = "insert into user (name, password)
 			VALUES ('$name', '$words')";
 		
 			if (mysqli_query($conn, $insert)) {
-				echo "注册成功";
+				echo "sign succeed";
 			} else {
 				echo "Error: " . $insert . "<br>" . mysqli_error($conn);
 			}

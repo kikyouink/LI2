@@ -72,36 +72,35 @@ html,body {
     button,input {
         display: block;
         box-sizing: border-box;
-        padding: 10px;
         width: 280px;
         outline: none;
         border: none;
         font: 15px "微软雅黑";
     }
+    button{
+        height: 50px;
+    }
     input {
         text-indent: 15px; 
+        height: 40px;
+        line-height: 40px;
     }
     .iconfont{
         &.lg,&.sm {
-            display: block;
-            width: 32px;
-            height: 32px;
-            line-height: 32px;
             opacity: 0.8;
+            transition: opacity 0.2s;
         }
         &.lg {
             font-size: 32px;
-            transition: opacity 0.2s;
         }
         &.sm {
             font-size: 25px;
-            text-align: center;
         }
-        &.lg:hover,.sm:hover {
+        &.lg:hover,&.sm:hover {
             opacity: 1;
         }
         &.margin{
-            margin: 0 18px;
+            margin: 0 20px;
         }
     }
     .music-pic{
@@ -296,7 +295,7 @@ html,body {
             width: 500px;
             height: 3px;
 
-            .progress_active{
+            .progress-active{
                 float: left;
                 display: block;
                 width: 0px;
@@ -313,12 +312,7 @@ html,body {
             border-radius: 50%;
             background: white;
             box-shadow: 0 0 3px 1px;
-            animation: rotating 1s linear infinite;
-            animation-play-state: paused;
 
-            &.active{
-                animation-play-state: running;
-            }
         }
     }
     .play-volume {
@@ -478,7 +472,7 @@ html,body {
             font-size: 50px;
             line-height: 150px;
 
-            &.icon-cloud {
+            .icon-cloud {
                 font-size: 50px;
             }
         }
@@ -514,6 +508,18 @@ html,body {
                     height: 100%;
                     flex-direction: column;
                     align-items: center;
+
+                    button{
+                        .spinner{
+                            animation: rotating 1s linear infinite;
+                            display: inline-block;
+                            height: 20px;
+                            width: 20px;
+                            border-radius: 50%;
+                            border: 2px solid white;
+                            margin: 0 auto;
+                        }
+                    }
                 }
             }
         }

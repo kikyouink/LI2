@@ -43,8 +43,8 @@ define("api",function(){
 			  className = className||'';
 			  innerHTML = innerHTML||'';
 			  //批量put
+			  var list=[];
 			  if(Array.isArray(className)&&Array.isArray(innerHTML)){
-				  var list=[];
 				  for(var i=0;i<className.length;i++){
 					  var node = $("<" + type + "></" + type + ">");
 					  node.addClass(className[i]);
@@ -54,7 +54,6 @@ define("api",function(){
 				  $(this).append(list);
 			  }
 			  else if(num){
-				  var list=[];
 				  for(var i=0;i<num;i++){
 					  var node = $("<" + type + "></" + type + ">");
 					  node.addClass(className);
@@ -74,8 +73,8 @@ define("api",function(){
 		  putDiv: function(className, innerHTML,num) {
 			  className = className||'';
 			  innerHTML = innerHTML||'';	
+			  var list=[];
 			  if(Array.isArray(className)&&Array.isArray(innerHTML)){
-				  var list=[];
 				  for(var i=0;i<className.length;i++){
 					  var div = $("<div></div>");
 					  div.addClass(className[i]);
@@ -85,7 +84,6 @@ define("api",function(){
 				  $(this).append(list);
 			  }
 			  else if(num){
-				  var list=[];
 				  for(var i=0;i<num;i++){
 					  var div = $("<div></div>");
 					  div.addClass(className);
@@ -109,6 +107,9 @@ define("api",function(){
 				  else parent = $(this).parent();
 			  }
 			  return parent;
+		  },
+		  clear:function(){
+			  $(this).find('input[type="password"]').val('');
 		  },
 	  })
 	  

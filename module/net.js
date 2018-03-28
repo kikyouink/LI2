@@ -1,9 +1,18 @@
-define("net",["ui"],function(ui) {
+define("net",["ui","storage"],function(ui,storage) {
     var net= {
+        lsUrl:'../../server/ls.php',
+        assestUrl:'../../server/assest.php',
+        init:function(){
+            console.log('接受数据中...');
+            var username=storage.cookie.get('username');
+            if(username) $('.user-name').text(username);
+        },
         checkReg: function (obj, mode) {
             for (var i in obj) {
-                if (obj[i].length == 0) return 0;
-                if (obj[i].length < 6 || obj[i].length > 15) return 1;
+                if(i!='type'){
+                    if (obj[i].length == 0) return 'null';
+                    if (obj[i].length < 6 || obj[i].length > 15) return 'length illegal';
+                }
             }
             var reg;
             mode = mode || '';
@@ -11,31 +20,28 @@ define("net",["ui"],function(ui) {
                 case 'remix': reg = /[^A-Za-z0-9_\-\u4e00-\u9fa5]+/g; break;//包括汉字
                 default: reg = /\W+/g; break;
             }
-            return reg.test(obj.username);
+            if(reg.test(obj.username)==true) return 'entry illegal';
+            else return 'legal';
         },
-        sign: function (obj, callback) {
-            obj.type = 'sign';
-            net.post(obj, '注册成功', callback);
-        },
-        login: function (obj, callback) {
-            obj.type = 'login';
-            net.post(obj, '登录成功', callback);
-        },
-        post: function (obj, prompt, callback) {
-            var url="page/main/main.php";
+        ls: function (obj,suc,err) {
+            var url=net.lsUrl;
+            var prompt;
             $.post(url,obj,function(result){
-                if(result==prompt){
-                    $('.behind p').text(prompt);
-                    ui.LS.preserve(function () {
-                        ui.LS.hide();
-                        $('.user_name').text(obj.username);
-                    });
+                switch(result){
+                    case 'login succeed':prompt='登录成功';break;
+                    case 'password error':prompt='密码错误';break;
+                    case 'user not exsits':prompt='用户不存在';break;
+                    case 'user exsits':prompt='用户名已存在，请登录';break;
+                    case 'sign succeed':prompt='注册成功';break;
+                }
+                if(result=='login succeed'||result=='sign succeed'){
+                    suc(prompt);
                  }
-                 else ui.showAlert(result,callback);
+                 else err(prompt);
              },'text');
         },
         checkLogin: function () {
-            return false;
+           return storage.cookie.get('username');
         },
     };
     return net;

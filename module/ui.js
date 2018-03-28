@@ -10,16 +10,12 @@ define("ui",function(){
         showAlert: function (text, callback) {
             var alert = $('body').putDiv('alert normal', text);
             setTimeout(function () {
-                if (callback) callback();
+                alert.fadeOut();
                 alert.remove();
-            }, 2000)
+                if (callback) callback();
+            }, 2000);
         },
         creatPlayList: function () {
-            // 本地服务器暂时无法演示
-            // $.post(media.url,'playListRq',function(result){
-            // 	console.log(result);
-            // 	media.playList=result;
-            // },'json');
             $('.playList').putDiv('uc', '', 5);
             for (var i = 0; i < media.playList.length; i++) {
                 var uc = $('.uc').eq(i);

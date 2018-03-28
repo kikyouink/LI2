@@ -1,7 +1,7 @@
 define("theme",["storage"],function(storage){
     var theme= {
         init: function () {
-            var skin = storage.get('theme') || 'red';
+            var skin = storage.local.get('theme') || 'red';
             theme.apply(skin);
         },
         list: ['red', 'purple', 'glass', 'star'],
@@ -14,13 +14,13 @@ define("theme",["storage"],function(storage){
             var tsrc = '../../dist/css/' + mode + '/' + skin + '.css';
             $('#mode').attr('href', msrc);
             $('#theme').attr('href', tsrc);
-            storage.save('theme', skin);
+            storage.local.set('theme', skin);
         },
         change: function (skin) {
             theme.apply(skin);
         },
         Next: function () {
-            var skin = storage.get('theme') || 'red';
+            var skin = storage.local.get('theme') || 'red';
             var themeNext = theme.list.findNext(skin);
             theme.apply(themeNext);
         },
