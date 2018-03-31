@@ -2,7 +2,6 @@ define("net",["ui","storage"],function(ui,storage) {
     var net= {
         lsUrl:'../../server/ls.php',
         musicUrl:'../../server/music.php',
-        assestUrl:'../../server/assest.php',
         init:function(){
             console.log('接受数据中...');
             var username=storage.cookie.get('username');
@@ -10,6 +9,9 @@ define("net",["ui","storage"],function(ui,storage) {
             $.post(this.musicUrl,function(){
                 console.log('已执行');
             });
+        },
+        checkLogin: function () {
+            return storage.cookie.get('username');
         },
         checkReg: function (obj, mode) {
             for (var i in obj) {
@@ -44,8 +46,11 @@ define("net",["ui","storage"],function(ui,storage) {
                  else err(prompt);
              },'text');
         },
-        checkLogin: function () {
-           return storage.cookie.get('username');
+        sreach:function(obj){
+            var url=net.musicUrl;
+            $.post(url,obj,function(result){
+                
+            });
         },
     };
     return net;

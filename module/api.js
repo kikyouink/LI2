@@ -102,6 +102,7 @@ define("api",function(){
 		  },
 		  getParent: function(num) {
 			  var parent;
+			  if(!num) num=1;
 			  while(num--) {
 				  if(parent) parent = parent.parent();
 				  else parent = $(this).parent();

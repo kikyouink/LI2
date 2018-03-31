@@ -1,0 +1,147 @@
+.tab,form{
+    display: flex;
+    align-items: center;
+}
+form{
+    justify-content: space-around;
+}
+.tab{
+    justify-content: space-between;
+}
+//公共基础组件
+button,input {
+    display: block;
+    width: 280px;
+    outline: none;
+    border: none;
+    font: 15px "微软雅黑";
+    height: 40px;
+    line-height: 40px;
+
+}
+button {
+    border: 5px solid rgba(255,255,255,0.2);
+    background: none;
+    box-sizing: border-box ;
+    height: 50px;
+    color:white;
+}
+button:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+button[disabled] {
+    background-color: rgba(255,255,255,0.4);
+}
+input {
+    text-indent: 25px; 
+    box-sizing: border-box;
+    background:rgba(255,255,255,0.2);
+    color:white;
+
+    &::-webkit-input-placeholder {
+        color:rgba(255,255,255,0.5);
+    }
+    &.search{
+        background: #e4e9ec;
+        color:gray;
+        &::-webkit-input-placeholder {
+            color:gray;
+        }
+    }
+}
+
+//图标
+.iconfont{
+    &.lg,&.sm {
+        opacity: 0.8;
+        transition: opacity 0.2s;
+    }
+    &.lg {
+        font-size: 32px;
+    }
+    &.sm {
+        font-size: 25px;
+    }
+    &.lg:hover,&.sm:hover {
+        opacity: 1;
+    }
+    &.margin{
+        margin: 0 20px;
+    }
+}
+
+//滤镜
+.blur {
+    filter: blur(7px);
+}
+
+//分界线
+hr{
+    border: none;
+    height: 2px;
+    background:rgba(255,255,255,0.2);
+}
+
+//列表
+table {
+    width: 100%;
+    text-align: left;
+
+    td,th {
+        padding: 6px;
+        text-indent: 10px;
+    }
+    td {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    th{
+        &.th-id {
+            width: 10%;
+        } 
+        &.th-song {
+            width: 35%;
+        }           
+        &.th-singer {
+            width: 25%;
+        }          
+        &.th-album {
+            width: 30%;
+        }
+    }
+}
+
+//选项卡
+.tab,.slider-bar{
+    margin: 6px auto;
+}
+.tab {
+    width: fit-content;
+    height: 32px;
+
+    a {
+        width: 100px;
+        height: 100%;
+        line-height: 32px;
+        text-align: center;
+    }
+}
+//滑块
+.slider-bar{
+    width:200px;
+
+    .slider {
+        width: 80px;
+        height: 3px;
+        margin-left: 10px;
+    }
+}
+
+//表单
+form {
+    box-sizing: border-box;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+}

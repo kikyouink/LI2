@@ -1,19 +1,14 @@
 define("theme",["storage"],function(storage){
     var theme= {
         init: function () {
-            var skin = storage.local.get('theme') || 'red';
+            var skin = storage.local.get('theme') || 'glass';
             theme.apply(skin);
         },
-        list: ['red', 'purple', 'glass', 'star'],
+        list: [ 'glass', 'star','rabbit'],
         //兼容火狐，火狐不支持disabled
         apply: function (skin) {
-            var mode;
-            if (skin == 'red' || skin == 'purple') mode = 'light'
-            else mode = 'dark';
-            var msrc = '../../dist/css/' + mode + '/' + mode + '.css';
-            var tsrc = '../../dist/css/' + mode + '/' + skin + '.css';
-            $('#mode').attr('href', msrc);
-            $('#theme').attr('href', tsrc);
+            var src = '../../dist/css/' + skin + '.css';
+            $('#theme').attr('href', src);
             storage.local.set('theme', skin);
         },
         change: function (skin) {

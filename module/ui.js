@@ -1,8 +1,7 @@
 define("ui",function(){
     var ui={
         init:function(){
-            var page=$('.page-found');
-            page.load('../../page/found/found.html');
+           console.log('ui.init()');
         },
         full: function () {
             $('#container').removeAttr('style').toggleClass('full');
@@ -36,7 +35,7 @@ define("ui",function(){
                 for (var j = 0; j < 4; j++) {
                     var td = tr.children().eq(j);
                     if (j == 0) td.text('0' + (i + 1));
-                    else td.text(media.favoriteList[i][th[j - 1]])
+                    else td.text(media.favoriteList[i][th[j - 1]]);
                 }
             }
         },
@@ -83,11 +82,11 @@ define("ui",function(){
         LS: {
             show: function () {
                 $('#LSmask').fadeIn();
-                $('#main,#mask').addClass('blur');
+                $('#main,#musicInterface').addClass('blur');
             },
             hide: function () {
                 $('#LSmask').fadeOut();
-                $('#main,#mask').removeClass('blur');
+                $('#main,#musicInterface').removeClass('blur');
             },
             preserve: function (callback) {
                 $('.front').toggleClass('active');
@@ -116,7 +115,7 @@ define("ui",function(){
                         $(e).removeClass().addClass('pic ' + li[i]);
                     })
                     var active = $('.btn-list').children().eq(index);
-                    active.addClass('blue').siblings().removeClass('blue');
+                    active.addClass('active').siblings().removeClass('active');
                     if (index > 3) index = -1;
                 }, time);
             },

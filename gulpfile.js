@@ -7,28 +7,35 @@ var amdOptimize = require("amd-optimize");
 var rjs = require('gulp-requirejs');
 //编译scss
 var path={
-    sass:'page/**/*.scss',
+    page:'page/**/*.scss',
+    component:'component/*.scss',
+    theme:'theme/*.scss',
     module:'module/*.js',
-    img:'assest/img/*/*.png',
     core:'driver/*.js',
-    theme:'theme/**/*.scss',
+    img:'assest/img/*/*.png',
 };
 var dist={
-    sass:'dist/css',
-    module:'dist/js',
+    css:'dist/css',
+    js:'dist/js',
     img:'dist/img',
 };
-gulp.task('sass1', function(){
-    gulp.src(path.sass)
+
+//页面scss
+gulp.task('layout', function(){
+    gulp.src([path.component,path.page])
         .pipe(concat('style.scss'))
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-        .pipe(gulp.dest(dist.sass));
+        .pipe(gulp.dest(dist.css));
 });
-gulp.task('sass2', function(){
+
+//主题scss
+gulp.task('theme', function(){
     gulp.src(path.theme)
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-        .pipe(gulp.dest(dist.sass));
+        .pipe(gulp.dest(dist.css));
 });
+
+//模块js
 gulp.task("module",function(){
     gulp.src(path.module)
     .pipe(amdOptimize('driver/core', {
@@ -37,12 +44,12 @@ gulp.task("module",function(){
     }))
     .pipe(uglify())
     .pipe(concat('module.js'))
-    .pipe(gulp.dest(dist.module)); //输出目录 
+    .pipe(gulp.dest(dist.js)); //输出目录 
 });
 
-gulp.watch(path.sass, ['sass1']);
-gulp.watch(path.theme, ['sass2']);
+gulp.watch([path.component,path.page], ['layout']);
+gulp.watch(path.theme, ['theme']);
 gulp.watch([path.module,path.core], ['module']);
 
-gulp.task('default',['sass1','sass2','module']);
+gulp.task('default',['layout','theme','module']);
 

@@ -10,6 +10,16 @@ html,body {
 ::-webkit-scrollbar {
 	display: none;
 }
+#header,.header-menu,.search-bar,.icon-menu,.slideBar_item,#footer,.play-group,.play-status,.play-volume,.play-list,.mv-list {
+    display: flex;
+    align-items: center;
+}
+.play-group,.play-volume,.play-status,.mv-list,.play-list{
+    justify-content: space-around;
+}
+.icon-menu,.header-menu,#footer{
+    justify-content: space-between;
+}
 @keyframes rotating {
     from {
         transform: rotate(0);
@@ -30,7 +40,8 @@ html,body {
 	box-shadow: 10px 10px 50px gray;
     transition: all 0.5s;
     cursor: default;
-	user-select: none;
+    user-select: none;
+    color: rgba(255,255,255,0.8);
     
     @media screen and (max-height:650px){
         #container {
@@ -51,93 +62,11 @@ html,body {
         border-radius: 0;
         box-shadow: none;
     }
-    .blur {
-        filter: blur(7px);
-    }
     .background{
         width: 100%;
         height: 100%;
         overflow: auto;
     }
-    #header,.header-menu,.search-bar,.icon-menu,.slideBar_item,#footer,.play-group,.play-status,.play-volume,.tab,form,.play-list,.mv-list {
-        display: flex;
-        align-items: center;
-    }
-    .play-group,.play-volume,.play-status,.mv-list,.play-list,form {
-        justify-content: space-around;
-    }
-    .icon-menu,.header-menu,#footer,.tab {
-        justify-content: space-between;
-    }
-    button,input {
-        display: block;
-        box-sizing: border-box;
-        width: 280px;
-        outline: none;
-        border: none;
-        font: 15px "微软雅黑";
-    }
-    button{
-        height: 50px;
-    }
-    input {
-        text-indent: 15px; 
-        height: 40px;
-        line-height: 40px;
-    }
-    .iconfont{
-        &.lg,&.sm {
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-        &.lg {
-            font-size: 32px;
-        }
-        &.sm {
-            font-size: 25px;
-        }
-        &.lg:hover,&.sm:hover {
-            opacity: 1;
-        }
-        &.margin{
-            margin: 0 20px;
-        }
-    }
-    .music-pic{
-        &.lg{
-            top: 50px;
-            left: 50px;
-            width: 200px;
-            height: 200px;
-        }
-        &.sm{
-            float: left;
-            width: 50px;
-            background: inherit;
-            background-size: contain;
-            transition: all 0.3s;
-
-            &:hover {
-                filter: brightness(0.7);
-            }
-        }
-    }
-    .music-info {
-        &.lg{
-            padding-bottom: 20px;
-            text-align: center;
-        }
-        &.sm{
-            padding-left: 10px;
-                
-            .music-name,.singer {
-                display: block;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
-    }
-
 }
 
 /*---------------头部------------------*/
@@ -170,10 +99,9 @@ html,body {
             .search-bar{
                 .search {
                     padding: 5px;
-                    width: 100% !important;
-                    height: 30px !important;
+                    width: 100% ;
+                    height: 30px;
                     border-radius: 1em;
-                    color: gray !important;
                 }
             }
             .icon-menu {
@@ -190,7 +118,7 @@ html,body {
                     .icon-avatar {
                         float: left;
                     }
-                    .userInfo {
+                    .user-info {
                         display: none;
                     }
 
@@ -206,7 +134,7 @@ html,body {
 	z-index: 1;
 	height: calc(100% - 114px);
     transition: all 0.3s;
-    
+
     #slideBar,#info {
         height: 100%;
     }
@@ -227,10 +155,15 @@ html,body {
             line-height: 40px;
             transition: all 0.3s ease-out;
             transform: translateX(0px);
+            color: rgba(255,255,255,0.6);
 
             &.active,&:hover{
                 transform: translateX(7px);
+                background: rgba(0,0,0,0.1);
             }
+            .iconfont{
+				color: rgba(255,255,255,0.6);
+			}
         }
         .playing-box{
             position: absolute;
@@ -238,37 +171,286 @@ html,body {
             padding: 5px;
             width: 100%;
 
-            .music-pic,.music-info.sm{
+            .music-pic.sm,.music-info.sm{
                 height: 50px;
             }
+            .music-pic{
+                &.sm{
+                    float: left;
+                    width: 50px;
+                    background: inherit;
+                    background-size: contain;
+                    transition: all 0.3s;
+            
+                    &:hover {
+                        filter: brightness(0.7);
+                    }
+                }
+            }
+            .music-info {
+                &.sm{
+                    padding-left: 10px;
+                        
+                    .music-name,.singer {
+                        display: block;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                    .music-name {
+                        color: white;
+                    }
+                    .singer {
+                        color: rgba(255,255,255,0.6);
+                    }
+                }
+            }
         }
     }
 
-    /*---------------信息栏------------------*/
-    #info{
-        .page {
+    /*---------------页面------------------*/
+    #page-container{
+        .page{
             display: none;
             height: 100%;
-
+    
             &.active{
                 display: block;
             }
-        }
-        .page.N{
-            text-align: center;
-            font-size: 50px;
-            line-height: 200px;
-
-            &.active{
-                display: block;
+            &.page-found{
+                .box {
+                    padding-top: 40px;
+                    width: 100%;
+                    height: 230px;
+                
+                    .pic-list {
+                        position: relative;
+                        overflow: hidden;
+                        height: 200px;
+                        .pic {
+                            position: absolute;
+                            top: 0;
+                            left: calc(50% - 250px);
+                            list-style: none;
+                            transition: all 0.5s ease-out;
+                
+                            .picimg {
+                                float: left;
+                                width: 500px;
+                                height: 200px;
+                                border: none;
+                            }
+                        }
+                        .p1 {
+                            opacity: 0;
+                            transform: translate(-300px,0) scale(0.81);
+                        }
+                        .p2 {
+                            z-index: 2;
+                            transform: translate(-150px,0) scale(0.81);
+                            filter: brightness(0.8);
+                        }
+                        .p3 {
+                            z-index: 3;
+                            transform: translate(0,0) scale(1);
+                        }
+                        .p4 {
+                            z-index: 2;
+                            transform: translate(150px,0) scale(0.81);
+                            filter: brightness(0.5);
+                        }
+                        .p5 {
+                            opacity: 0;
+                            transform: translate(300px,0) scale(0.81);
+                        }
+                    }
+                    .btn-list{
+                        padding-top: 5px;
+                        width: 100%;
+                        height: 30px;
+                        text-align: center;
+                
+                        a{
+                            display:inline-block;
+                            width: 35px;
+                            height: 2px;
+                            margin:0 2.4px;
+                            background-color: rgba(255,255,255,0.6);
+        
+                            &.active {
+                                background: white !important;
+                            }
+                        }
+                    }
+                
+                }
+                
+                .recommend {
+                    margin: 0 auto;
+                    max-width: 1060px;
+                
+                    h3 {
+                        margin: 4px 20px;
+                    }
+                    .play-list {
+                        padding: 10px;
+                        height: auto;
+                
+                        .uc {
+                            position: relative;
+                            width: 140px;
+                            height: 140px;
+                            transition: filter 0.3s;
+                            filter: brightness(1);
+                
+                            &:hover{
+                                filter: brightness(0.8);
+                            }
+                            .tp {
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                background: rgba(0,0,0,.4);
+                            }
+                            img {
+                                width: 100%;
+                                height: 100%;
+                            }
+                            .bt {
+                                position: absolute;
+                                bottom: 0;
+                                padding: 2px;
+                                width: 100%;
+                                background: rgba(0,0,0,.4);
+                                text-overflow: ellipsis;
+                                font-size: 13px;
+                                line-height: 15px;
+                                
+                            }
+                
+                        }
+                    }
+                }
             }
-            &:before{
-                content: '页面仍在开发中';
+            &.page-favorite{
+                .favorite-info{
+                    height: 265px;
+                
+                    .favorite-pic,.favorite-data {
+                        float: left;
+                        margin: 20px;
+                    }
+                    .favorite-pic {
+                        width: 200px;
+                        height: 200px;
+                        background: url(../../assest/img/avatar/favorite.png);
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        border: 7px solid rgba(255,255,255,0.2);
+                    }
+                    .favorite-data {
+                        width: 60%;
+                        padding: 7px;
+                    }
+                }
+                .song-list{
+                    table {
+                        width: 100%;
+                        text-align: left;
+                        color: rgba(255,255,255,0.6);
+                
+                        td,th {
+                            padding: 6px;
+                            text-indent: 10px;
+                        }
+                        td {
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            font-size: 14px;
+                        }
+                        th{
+                            border-bottom: 1px solid rgba(255,255,255,0.1);
+
+                            &:hover{
+                                background: rgba(0,0,0,0.1);
+                            }
+                            &.th-id {
+                                width: 10%;
+                            } 
+                            &.th-song {
+                                width: 35%;
+                            }           
+                            &.th-singer {
+                                width: 25%;
+                            }          
+                            &.th-album {
+                                width: 30%;
+                            }
+                        }
+                        tr:hover{
+                            background: rgba(0,0,0,0.1);
+                        }
+                    }
+                }
+            }
+            &.page-mv{
+                .tab{
+                    margin: 20px auto;
+                    border-width: 0 1px 0 0;
+                    // box-sizing: border-box;
+                
+                    a{
+                        box-sizing: border-box;
+                        border: {
+                            style: solid;
+                            width: 1px;
+                            color:rgba(255,255,255,0.2);
+                            
+                        }
+                        &:hover,&.active{
+                            background: rgba(0,0,0,0.2);
+                            color: rgba(255,255,255,0.8);
+                        }
+                        &:first-child{
+                            border-radius:10px 0 0 10px;
+                        }
+                        &:last-child{
+                            border-radius: 0 10px 10px 0;
+                        }
+                    }
+                }
+                
+                .mv-list {
+                    max-width: 1060px;
+                    margin: 0 auto;
+                    flex-wrap: wrap;
+                    align-content: flex-start;
+                    padding: 10px;
+                
+                    .mv {
+                        position: relative;
+                        width: 260px;
+                        height: 150px;
+                        margin: 10px 5px;
+                    }
+                }
+            }
+            &.N{
+                text-align: center;
+                font-size: 50px;
+                line-height: 200px;
+                color: rgba(255,255,255,0.8);
+        
+                &.active{
+                    display: block;
+                }
+                &:before{
+                    content: '页面仍在开发中';
+                }
             }
         }
     }
-    
 }
+    
 
 /*---------------底部------------------*/
 #footer {
@@ -276,7 +458,13 @@ html,body {
 	bottom: 0;
 	width: 100%;
     height: 50px;
-    
+
+    input[type=range]::-webkit-slider-runnable-track {
+		background: rgba(255,255,255,0.8);
+	}
+    .iconfont {
+		color: white;
+	}
     .play-group,.play-status,.play-volume {
         height: 100%;
     }
@@ -294,6 +482,7 @@ html,body {
             display: block;
             width: 500px;
             height: 3px;
+            background: rgba(255,255,255,0.6);
 
             .progress-active{
                 float: left;
@@ -358,20 +547,38 @@ html,body {
 	width: 100%;
     height: calc(100% - 112px);
     overflow:auto;
+
+    .iconfont{
+		color: white;
+	}
 }
 #musicInterface{
+    .music-pic {
+        &.lg{
+            top: 50px;
+            left: 50px;
+            width: 200px;
+            height: 200px;
+        }
+    }
+    .music-info {
+        &.lg{
+            text-align: center;
+        }
+    }
     .icon-back {
         position: absolute;
         top: 20px;
         right: 35px;
         z-index: 100;
     }
-    .rt {
+    .music-disc {
         position: relative;
         height: 380px;
 
         .disc {
             left: calc(50% - 157px);
+            top:calc(50% - 157px);
             width: 300px;
             height: 300px;
             border: 7px solid rgba(255,255,255,0.1);
@@ -395,9 +602,20 @@ html,body {
         width: 700px;
         margin: 30px auto;
 
+        .comment-input{
+            width: 100%;
+            height: 50px;
+            margin:20px 0;
+            border: 5px solid rgba(255,255,255,0.2);
+        }
         .comment{
             height: auto;
-            border-width: 0 0 1px 0;
+            border: {
+                style:solid;
+                color: rgba(255,255,255,0.1);
+                width: 0 0 1px 0;
+            }
+
             position: relative;
             width: 100%;
             min-height: 75px;
@@ -418,10 +636,6 @@ html,body {
                     font-size: 14px;
                 }
             }
-        }
-        .comment-input{
-            width: 100%;
-	        margin:20px 0;
         }
     }
 
@@ -463,6 +677,7 @@ html,body {
     .front {
         z-index: 2;
         transform: rotateY(180deg);
+        border: 5px solid rgba(255,255,255,0.3);
 
         &.active {
             transform: rotateY(0deg);
@@ -471,56 +686,37 @@ html,body {
             height: 150px;
             font-size: 50px;
             line-height: 150px;
+            color: rgba(255,255,255,0.8);
 
             .icon-cloud {
                 font-size: 50px;
             }
         }
-        .tab {
-            margin: 0 auto;
-            width: 200px;
-            height: 45px;
-            align-items: center;
-
-            .tab_item {
-                width: 80px;
-                text-align: center;
-            }
-        }
-        .slider {
-            margin-left: 65px;
-            width: 80px;
-            height: 3px;
-        }
+        .tab{
+			a{
+				color: rgba(255,255,255,0.6);
+		
+				&:hover{
+					color: rgba(255,255,255,0.8);
+				}
+				&.active{
+					color:white;
+				}
+			}
+		}
+		.slider {
+			background: rgba(255,255,255,0.8);
+		}
         .formGroup {
             overflow: hidden;
             margin: 25px 0;
             width: 200%;
             height: 170px;
 
-            div {
+            form {
                 float: left;
                 width: 50%;
-                height: 100%;
 
-                form {
-                    box-sizing: border-box;
-                    height: 100%;
-                    flex-direction: column;
-                    align-items: center;
-
-                    button{
-                        .spinner{
-                            animation: rotating 1s linear infinite;
-                            display: inline-block;
-                            height: 20px;
-                            width: 20px;
-                            border-radius: 50%;
-                            border: 2px solid white;
-                            margin: 0 auto;
-                        }
-                    }
-                }
             }
         }
     }
