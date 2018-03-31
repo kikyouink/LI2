@@ -1,4 +1,4 @@
-define("net",["ui","storage"],function(ui,storage) {
+define("net",["storage"],function(storage) {
     var net= {
         lsUrl:'../../server/ls.php',
         musicUrl:'../../server/music.php',
@@ -49,9 +49,18 @@ define("net",["ui","storage"],function(ui,storage) {
         sreach:function(obj){
             var url=net.musicUrl;
             $.post(url,obj,function(result){
-                
+                $('.page.page-search').addClass('active').siblings().removeClass('active');
+                // $('#slideBar li')
             });
         },
+        loadPage:function(type){
+            var url=net.musicUrl;
+            $.post(url,{page:type},function(result){
+                console.log('接收page-'+type+'数据成功');
+                return result;
+            },'json');
+
+        }
     };
     return net;
 });

@@ -27,7 +27,6 @@
         id int(6) unsigned auto_increment primary key, 
         name varchar(30) not null,
         src varchar(100) not null,
-        mv varchar(100),
         album int(6) unsigned not null,
         foreign key(album) references album(id)
     )";
@@ -37,6 +36,7 @@
     $creatMv = "create table if not exists mv (
         id int(6) unsigned auto_increment primary key, 
         src varchar(100) not null,
+        pic varchar(100) not null,
         song int(6) unsigned not null,
         foreign key(song) references song(id)
     )";

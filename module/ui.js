@@ -1,4 +1,4 @@
-define("ui",function(){
+define("ui",["media"],function(){
     var ui={
         init:function(){
            console.log('ui.init()');
@@ -14,56 +14,59 @@ define("ui",function(){
                 if (callback) callback();
             }, 2000);
         },
-        creatPlayList: function () {
-            $('.playList').putDiv('uc', '', 5);
-            for (var i = 0; i < media.playList.length; i++) {
-                var uc = $('.uc').eq(i);
-                var tp = uc.putDiv('tp', media.playList[i].count + '万');
-                var icon = tp.put('i', 'iconfont icon-count');
-                var bt = uc.putDiv('bt', media.playList[i].name);
-                var img = uc.put('img');
-                img.attr('src', media.playList[i].picSrc);
-            }
-        },
-        creatFavoriteList: function () {
-            var num = media.favoriteList.length;
-            $('tbody').put('tr', '', '', num);
-            $('tr').not("tr:first-child").put('td', '', '', 4);
-            var th = ['song', 'singer', 'aublm'];
-            for (var i = 0; i < num; i++) {
-                var tr = $('tr').eq(i + 1);
-                for (var j = 0; j < 4; j++) {
-                    var td = tr.children().eq(j);
-                    if (j == 0) td.text('0' + (i + 1));
-                    else td.text(media.favoriteList[i][th[j - 1]]);
+        creat:{
+            playList: function (data) {
+                $('.playList').putDiv('uc', '', 5);
+                for (var i = 0; i < data.length; i++) {
+                    var uc = $('.uc').eq(i);
+                    var tp = uc.putDiv('tp', data[i].count + '万');
+                    var icon = tp.put('i', 'iconfont icon-count');
+                    var bt = uc.putDiv('bt', data[i].name);
+                    var img = uc.put('img');
+                    img.attr('src', data[i].picSrc);
                 }
-            }
-        },
-        creatMvList: function () {
-            $('.mvList').putDiv('mv', '', media.mvList.length);
-            // console.log(media.mvList);
-            for (var i = 0; i < media.mvList.length; i++) {
-                var mv = $('.mv').eq(i);
-                var tp = mv.putDiv('tp', media.mvList[i].count + '万');
-                var icon = tp.put('i', 'iconfont icon-count');
-                var bt = mv.putDiv('bt', media.mvList[i].singer + ' - ' + media.mvList[i].song);
-                var img = mv.put('img');
-                img.attr('src', media.mvList[i].picSrc);
-            }
-        },
-        creatCommentList:function(){
-            $('.commentList').putDiv('comment', '', media.commentList.length);
-            // console.log(media.mvList);
-            for (var i = 0; i < media.commentList.length; i++) {
-                var comment = $('.comment').eq(i);
-                var avatar=comment.putDiv('avatar');
-                var img = avatar.put('img');
-                img.attr('src', media.commentList[i].picSrc);
-                var content=comment.putDiv('content');
-                var username=content.put('strong','cname',media.commentList[i].user+':');
-                var p=content.put('p','',media.commentList[i].content);
-                var time=content.put('span','',media.commentList[i].time);
-            }
+            },
+            favoriteList: function (data) {
+                var num = data.length;
+                media.favoriteList=data;
+                console.log(media.favoriteList);
+                $('tbody').put('tr', '', '', num);
+                $('tr').not("tr:first-child").put('td', '', '', 4);
+                var th = ['id','song', 'singer', 'album'];
+                for (var i = 0; i < num; i++) {
+                    var tr = $('tr').eq(i + 1);
+                    for (var j = 0; j < 4; j++) {
+                        var td = tr.children().eq(j);
+                        td.text(data[i][th[j]]);
+                    }
+                }
+            },
+            mvList: function (data) {
+                $('.mvList').putDiv('mv', '', data.length);
+                // console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    var mv = $('.mv').eq(i);
+                    var tp = mv.putDiv('tp', data[i].count + '万');
+                    var icon = tp.put('i', 'iconfont icon-count');
+                    var bt = mv.putDiv('bt', data[i].singer + ' - ' + data[i].song);
+                    var img = mv.put('img');
+                    img.attr('src', data[i].picSrc);
+                }
+            },
+            commentList:function(){
+                $('.commentList').putDiv('comment', '', media.commentList.length);
+                // console.log(data);
+                for (var i = 0; i < media.commentList.length; i++) {
+                    var comment = $('.comment').eq(i);
+                    var avatar=comment.putDiv('avatar');
+                    var img = avatar.put('img');
+                    img.attr('src', media.commentList[i].picSrc);
+                    var content=comment.putDiv('content');
+                    var username=content.put('strong','cname',media.commentList[i].user+':');
+                    var p=content.put('p','',media.commentList[i].content);
+                    var time=content.put('span','',media.commentList[i].time);
+                }
+            },
         },
         container: {
             move: function (e) {
@@ -119,7 +122,7 @@ define("ui",function(){
                     if (index > 3) index = -1;
                 }, time);
             },
-        }
+        },
     };
     return ui;
 });

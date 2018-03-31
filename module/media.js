@@ -6,9 +6,9 @@ define("media",function(){
         statusInfo: null,
         url: "server/search.php",
         mvList: [],
-        favoriteList: [],
-        playList: [],
-        commentList: [],
+        // favoriteList: [],
+        // playList: [],
+        // commentList: [],
         showInfo: function () {
             console.log('media.type: ' + media.type);
             console.log('media.statusInfo: ' + media.statusInfo.singer);
@@ -152,10 +152,10 @@ define("media",function(){
             $('.disc').toggleClass('active');
         },
         updateInfo: function (mediaInfo) {
-            var picSrc = media.loadSingerSrc(mediaInfo);
+            var avatar = mediaInfo.avatar;
             //url括号里面还要加引号，好坑
-            $('.musicPic').css('background-image', "url('" + picSrc + "')");
-            $('.songName').text(mediaInfo.song);
+            $('.music-pic').css('background-image', "url('" + avatar + "')");
+            $('.music-Name').text(mediaInfo.song);
             $('.singer').text(mediaInfo.singer);
         },
         updateProgress: function (e) {
@@ -190,7 +190,7 @@ define("media",function(){
 
         },
         loadSingerSrc: function (mediaInfo) {
-            var src = 'assest/img/singer/' + mediaInfo.singer + '.png';
+            var src = '';
             return src;
         },
         vol: {

@@ -2,7 +2,7 @@
 var api = require(["api"]);
 
 //UI模块
-var ui = require(["ui"], function (ui) {
+var ui = require(["ui","net"], function (ui,net) {
     ui.init();
     //创建列表
     // ui.creatFavoriteList();
@@ -28,18 +28,16 @@ var ui = require(["ui"], function (ui) {
     $('#header').dblclick(ui.full);
 
     //侧边栏
-    $('.slideBar_item').click(function () {
-        $('.slideBar_item.active,.page.active').removeClass('active');
-        $(this).addClass('active');
+    $('#slideBar li').click(function () {
         var index = $(this).index();
+        $('#slideBar li.active,.page.active').removeClass('active');
+        $(this).addClass('active');
         if ($(this).getParent(2).index() == 1) index += 4;
         var page = $('.page').eq(index);
-        // var type=page.attr('class').split(' ')[1].replace(/\w*-/g,'');
-        // // var type = 'search';
-        // var url = '../../page/' + type + '/' + type + '.html';
-
-        // if (type != 'N') page.load(url);
         page.addClass('active');
+        var type=page.attr('class').split(' ')[1].replace(/page-/g,'');
+        var data=net.loadPage(type);
+
     });
 
     //MV界面
@@ -133,6 +131,7 @@ var media = require(["media"], function (media) {
     $('table').on('click', 'tr', function () {
         media.type = 'audio';
         var index = $(this).index() - 1;
+        console.log(media.favoriteList);
         var mediaInfo = media.favoriteList[index];
         media.star(mediaInfo);
     });

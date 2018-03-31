@@ -29,6 +29,9 @@ define("storage",function() {
                     }
                 }
                 return value||null;
+            },
+            clear:function(){
+                storage.cookie.set('username',1,-1);
             }
         },
     };

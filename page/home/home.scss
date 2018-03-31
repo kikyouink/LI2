@@ -10,7 +10,7 @@ html,body {
 ::-webkit-scrollbar {
 	display: none;
 }
-#header,.header-menu,.search-bar,.icon-menu,.slideBar_item,#footer,.play-group,.play-status,.play-volume,.play-list,.mv-list {
+#header,.header-menu,.search-bar,.icon-menu,#slideBar li,#footer,.play-group,.play-status,.play-volume,.play-list,.mv-list {
     display: flex;
     align-items: center;
 }
@@ -148,8 +148,7 @@ html,body {
         .title {
             margin-left: 10px;
         }
-        .slideBar_item {
-            position: relative;
+        li {
             height: 40px;
             font-size: 15px;
             line-height: 40px;
