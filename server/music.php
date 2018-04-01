@@ -45,7 +45,7 @@
     if(isset($page)){
         switch($page){
             case 'favorite':
-            searchSong();
+            // searchSong();
             break;
         }
     }
