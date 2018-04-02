@@ -199,7 +199,7 @@ export class mediaModule {
         var src = '';
         return src;
     }
-    change(value) {
+    volChange(value) {
         if (!this.status) return;
         this.status[0].volume = value;
         $('.icon-mute').removeClass('icon-mute').addClass('icon-vol');

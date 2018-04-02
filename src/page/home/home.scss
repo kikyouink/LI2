@@ -215,6 +215,7 @@ html,body {
         .page{
             display: none;
             height: 100%;
+            overflow: auto;
     
             &.active{
                 display: block;
@@ -514,14 +515,27 @@ html,body {
         }
         .dot {
             position: absolute;
-            top: calc(50% - 7.5px);
+            top: calc(50% - 8px);
             z-index: 100;
             float: left;
-            width: 15px;
-            height: 15px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: white;
             box-shadow: 0 0 3px 1px;
+            box-sizing: border-box;
+
+            &.active{
+                animation: rotating 2s linear infinite;
+                border: {
+                    style: solid;
+                    width: 2px;
+                    color:gray;
+                    right:{
+                        color: white;
+                    }
+                }
+            }
 
         }
     }

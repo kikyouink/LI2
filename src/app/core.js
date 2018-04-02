@@ -58,10 +58,12 @@ let storage = new storageModule();
             });
         }
         else {
-            var data = JSON.parse(storage.session.get('favoriteList'));
-            media.favoriteList = data;
-            ui.creat.favoriteList(data);
-            media.prepare();
+            if($('tbody').children().length==2){
+                var data = JSON.parse(storage.session.get('favoriteList'));
+                media.favoriteList = data;
+                media.prepare();
+                ui.creat.favoriteList(data);
+            }
             page.addClass('active');
         }
 
@@ -96,7 +98,7 @@ let storage = new storageModule();
 (function () {
     //按钮组
     //为什么这么写？因为.pause是后来添加的类名，在此之前声明的方法无效
-    $('.playGroup').on('click', '.icon-play', function () {
+    $('.play-group').on('click', '.icon-play', function () {
         if (media.status) {
             media.continue();
         }
@@ -114,7 +116,7 @@ let storage = new storageModule();
             }
         }
     })
-    $('.playGroup').on('click', '.icon-pause', function () {
+    $('.play-group').on('click', '.icon-pause', function () {
         media.pause();
     })
     $('.icon-next').click(function () {
@@ -143,11 +145,11 @@ let storage = new storageModule();
     //调整音量
     $('.vc').on('input propertychange', function () {
         var value = $(this)[0].value;
-        media.vol.change(value);
+        media.volChange(value);
     })
     //静音
     $('.icon-vol').click(function () {
-        media.vol.toggle();
+        media.volToggle();
     });
     //播放歌单
     $('table').on('click', 'tr', function () {
