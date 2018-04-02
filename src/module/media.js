@@ -70,8 +70,12 @@ export class mediaModule {
                 this.updateProgressAuto();
             },
             oncanplay: () => {
-                this.toggle();
+                var play = $('.icon-play');
+                play.addClass('icon-pause').removeClass('icon-play');
                 $('.dot').removeClass('active');
+            },
+            onplayying: () => {
+                $('.dot').addClass('active');
             },
             onerror: () => {
                 console.error('加载出错...');
