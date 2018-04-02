@@ -7,7 +7,6 @@ export class netModule {
         this.musicUrl = '../src/server/music.php';
     }
     init() {
-        console.log('net.init()');
         var bool=this.checkLogin();
         console.log(bool);
         if(bool){
@@ -58,11 +57,11 @@ export class netModule {
             // $('#slideBar li')
         });
     }
-    loadPage(type) {
+    loadPage(type,callback) {
         var url = this.musicUrl;
         $.post(url, { page: type }, (result) => {
-            console.log('接收page-' + type + '数据成功');
-            return result;
+            console.log('接收page-' + type + '数据成功:'+result);
+            callback(result);
         }, 'json');
 
     }

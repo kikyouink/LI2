@@ -1,4 +1,5 @@
-class creat{
+
+class creat {
     playList(data) {
         $('.playList').putDiv('uc', '', 5);
         for (var i = 0; i < data.length; i++) {
@@ -11,15 +12,14 @@ class creat{
         }
     }
     favoriteList(data) {
-        var num = data.length;
-        media.favoriteList=data;
-        console.log(media.favoriteList);
-        $('tbody').put('tr', '', '', num);
+        var th = ['id', 'song', 'singer', 'album'];
+        var num1 = data.length;
+        var num2 = th.length;
+        $('tbody').put('tr', '', '', num1);
         $('tr').not("tr:first-child").put('td', '', '', 4);
-        var th = ['id','song', 'singer', 'album'];
-        for (var i = 0; i < num; i++) {
+        for (var i = 0; i < num1; i++) {
             var tr = $('tr').eq(i + 1);
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < num2; j++) {
                 var td = tr.children().eq(j);
                 td.text(data[i][th[j]]);
             }
@@ -37,22 +37,22 @@ class creat{
             img.attr('src', data[i].picSrc);
         }
     }
-    commentList(){
+    commentList() {
         $('.commentList').putDiv('comment', '', media.commentList.length);
         // console.log(data);
         for (var i = 0; i < media.commentList.length; i++) {
             var comment = $('.comment').eq(i);
-            var avatar=comment.putDiv('avatar');
+            var avatar = comment.putDiv('avatar');
             var img = avatar.put('img');
             img.attr('src', media.commentList[i].picSrc);
-            var content=comment.putDiv('content');
-            var username=content.put('strong','cname',media.commentList[i].user+':');
-            var p=content.put('p','',media.commentList[i].content);
-            var time=content.put('span','',media.commentList[i].time);
+            var content = comment.putDiv('content');
+            var username = content.put('strong', 'cname', media.commentList[i].user + ':');
+            var p = content.put('p', '', media.commentList[i].content);
+            var time = content.put('span', '', media.commentList[i].time);
         }
     }
 }
-class LS{
+class LS {
     show() {
         $('#LSmask').fadeIn();
         $('#main,#musicInterface').addClass('blur');
@@ -72,7 +72,7 @@ class LS{
 
     }
 }
-class flash{
+class flash {
     init() {
         //获取图片链接
     }
@@ -92,14 +92,14 @@ class flash{
         }, time);
     }
 }
-export class uiModule{
-    constructor(){
-        this.creat=creat.prototype;
-        this.LS=LS.prototype;
-        this.flash=flash.prototype;
+export class uiModule {
+    constructor() {
+        this.creat = creat.prototype;
+        this.LS = LS.prototype;
+        this.flash = flash.prototype;
     }
-    init(){
-        console.log('ui.init()');
+    init() {
+        
     }
     full() {
         $('#container').removeAttr('style').toggleClass('full');

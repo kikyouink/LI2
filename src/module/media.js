@@ -24,13 +24,13 @@ export class mediaModule {
         this.statusInfo = this.favoriteList[0];
     }
     star(mediaInfo) {
-        var src = mediaInfo.src;
+        var src = "http://music.163.com/song/media/outer/url?id=" + mediaInfo.src + ".mp3";
         this.new(src).trigger('play');
-        if (this.type == "audio") {
+        if (this.type == "video") {
             this.showInterface();
         }
-        this.volSlowUp();
         this.statusInfo = mediaInfo;
+        this.volSlowUp();
     }
     new(src) {
         var m;
@@ -43,7 +43,7 @@ export class mediaModule {
             if (this.type == 'audio') {
                 m = $('<audio></audio>');
                 m.attr('src', src);
-                $('#mask').append(m);
+                $('#backgound').append(m);
             }
             else {
                 //new Video()无法使用，既然有new Audio为什么不能有new Video
@@ -60,28 +60,28 @@ export class mediaModule {
     }
     init(m) {
         var obj = {
-            onloadstart:()=>{
+            onloadstart: () => {
                 console.info('开始加载:' + this.statusInfo.singer + ' - ' + this.statusInfo.song);
                 $('.dot').addClass('active');
                 this.updateInfo(this.statusInfo);
                 this.reset();
             },
-            onloadedmetadata:()=>{
+            onloadedmetadata: () => {
                 this.updateProgressAuto();
             },
-            oncanplay:()=>{
+            oncanplay: () => {
                 this.toggle();
                 $('.dot').removeClass('active');
             },
-            onerror:()=>{
+            onerror: () => {
                 console.error('加载出错...');
-                this.next();
+                // this.next();
             },
-            onstalled:()=>{
+            onstalled: () => {
                 $('.dot').removeClass('active');
                 console.info('缓冲中...');
             },
-            onended:()=>{
+            onended: () => {
                 this.next();
             },
         };
@@ -160,15 +160,15 @@ export class mediaModule {
     updateInfo(mediaInfo) {
         var avatar = mediaInfo.avatar;
         //url括号里面还要加引号，好坑
-        $('.music-pic').css('background-image', "url('" + avatar + "')");
-        $('.music-Name').text(mediaInfo.song);
+        $('.music-pic').css('background-image', "url('" + avatar + "?param=200y200')");
+        $('.music-name').text(mediaInfo.song);
         $('.singer').text(mediaInfo.singer);
     }
     updateProgress(e) {
         var width = e.pageX - $('.progress').offset().left;
         var all = this.status[0].duration;
         this.status[0].currentTime = width * all / $('.progress').width();
-        $('.progress_active').css('width', width);
+        $('.progress-active').css('width', width);
     }
     updateProgressAuto(e) {
         var getTime = function (time) {
@@ -179,17 +179,17 @@ export class mediaModule {
         var all = this.status[0].duration;
         var length = $('.progress').width();
         $(".time.r").text(getTime(all));
-        setInterval(function () {
+        setInterval(() => {
             var all = this.status[0].duration;
             var status = this.status[0].currentTime;
             var precent = status / all;
             var width = length * precent;
-            $('.progress_active').css('width', width);
+            $('.progress-active').css('width', width);
             $(".time.l").text(getTime(status));
         }, 500);
     }
     reset() {
-        $('.progress_active').removeAttr('style');
+        $('.progress-active').removeAttr('style');
         var pause = $('.icon-pause');
         pause.addClass('icon-play').removeClass('icon-pause');
         $('.disc').removeClass('active');
@@ -207,7 +207,7 @@ export class mediaModule {
     volSlowUp() {
         this.status[0].volume = 0;
         var limit = $('.vc')[0].value;
-        var timer = setInterval(function () {
+        var timer = setInterval(() => {
             if (this.status[0].volume < Math.min(limit, 0.95)) {
                 this.status[0].volume += 0.05;
             }
@@ -217,7 +217,7 @@ export class mediaModule {
         }, 60);
     }
     volSlowDown(callback) {
-        var timer = setInterval(function () {
+        var timer = setInterval(() => {
             if (this.status[0].volume > 0.05) {
                 this.status[0].volume -= 0.05;
             }

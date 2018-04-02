@@ -6,7 +6,7 @@
 html,body {
 	margin: 0;
 	height: 100%;
-	font-family: "微软雅黑";
+	font-family:Microsoft Yahei;
 }
 ::-webkit-scrollbar {
 	display: none;
@@ -210,12 +210,31 @@ html,body {
 
     /*---------------页面------------------*/
     #page-container{
+        position: relative;
+        height: 100%;
         .page{
             display: none;
             height: 100%;
     
             &.active{
                 display: block;
+            }
+            &.page-loading{
+                div{
+                    width: 50px;
+                    height: 50px;
+                    // margin: 200px auto;
+                    top:200px;
+                    position: absolute;
+                    left: 50%;
+                    animation: rotating 1.5s linear infinite;
+        
+                    .icon-loading{
+                        font-size: 50px;
+                        line-height: 50px;
+                    }
+                    
+                }
             }
             &.page-found{
                 .box {
@@ -450,6 +469,7 @@ html,body {
             }
         }
     }
+
 }
     
 

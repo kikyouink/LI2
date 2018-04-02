@@ -3,21 +3,20 @@ import { uiModule } from '../module/ui';
 import { mediaModule } from '../module/media';
 import { netModule } from '../module/net';
 import { themeModule } from '../module/theme';
+import { storageModule } from '../module/storage'
 import './component.scss';
 import '../page/home/home.scss';
 
 //通用接口
 api();
+let ui = new uiModule();
+let net = new netModule();
+let media = new mediaModule();
+let storage = new storageModule();
+
 //UI模块
 (function () {
-    let ui = new uiModule();
-    let net = new netModule();
     ui.init();
-    //创建列表
-    // ui.creatFavoriteList();
-    // ui.creatPlayList();
-    // ui.creatMvList();
-    // ui.creatCommentList();
 
     //轮播
     ui.flash.init();
@@ -40,27 +39,42 @@ api();
     //侧边栏
     $('#slideBar li').click(function () {
         var index = $(this).index();
+        //为什么这里不用siblings()?
         $('#slideBar li.active,.page.active').removeClass('active');
         $(this).addClass('active');
         if ($(this).getParent(2).index() == 1) index += 4;
         var page = $('.page').eq(index);
-        page.addClass('active');
-        var type = page.attr('class').split(' ')[1].replace(/page-/g, '');
-        var data = net.loadPage(type);
+        if (!storage.session.get('favoriteList')) {
+            //获取页面内容
+            var type = page.attr('class').split(' ')[1].replace(/page-/g, '');
+            $('.page-loading').addClass('active');
+            net.loadPage(type, function (result) {
+                storage.session.set('favoriteList', JSON.stringify(result));
+                media.favoriteList = result;
+                ui.creat.favoriteList(result);
+                media.prepare();
+                $('.page-loading').removeClass('active');
+                page.addClass('active');
+            });
+        }
+        else {
+            var data = JSON.parse(storage.session.get('favoriteList'));
+            media.favoriteList = data;
+            ui.creat.favoriteList(data);
+            media.prepare();
+            page.addClass('active');
+        }
 
     });
 
-    //MV界面
-    $('.segment a').click(function () {
-        $(this).siblings().removeClass('active');
+    //tab
+    $('.tab a').click(function () {
         $(this).addClass('active');
+        $(this).siblings().removeClass('active');
     });
 
     //滑动选项卡
     $('.tab a').on('click', function () {
-        console.log('sd');
-        $(this).addClass('active');
-        $(this).siblings().removeClass('active');
         if ($(this).getParent(2).hasClass('front')) {
             var id = $(this).index(); //当前操作的元素索引值 
             var num1 = 10 + id * 100;
@@ -80,8 +94,6 @@ api();
 
 //媒体模块
 (function () {
-    let media = new mediaModule();
-    // media.prepare();
     //按钮组
     //为什么这么写？因为.pause是后来添加的类名，在此之前声明的方法无效
     $('.playGroup').on('click', '.icon-play', function () {
@@ -141,7 +153,6 @@ api();
     $('table').on('click', 'tr', function () {
         media.type = 'audio';
         var index = $(this).index() - 1;
-        console.log(media.favoriteList);
         var mediaInfo = media.favoriteList[index];
         media.star(mediaInfo);
     });
@@ -156,13 +167,10 @@ api();
 
 //通信模块
 (function () {
-    var net = new netModule();
-    var ui = new uiModule();
     net.init();
     //点击弹出登录界面
     $('.user').click(function () {
         var bool = net.checkLogin();
-        console.log(bool);
         if (!bool) ui.LS.show();
     });
     //提交数据

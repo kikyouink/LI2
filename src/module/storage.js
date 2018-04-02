@@ -9,6 +9,17 @@ class local{
         localStorage.removeItem(key);
     }
 }
+class session{
+    set(key, value) {
+        sessionStorage.setItem(key, value);
+    }
+    get(key) {
+        return sessionStorage.getItem(key);
+    }
+    delete(key) {
+        sessionStorage.removeItem(key);
+    }
+}
 class cookie{
     set(key, value, expireDays) {
         var date = new Date();
@@ -35,9 +46,10 @@ class cookie{
 export class storageModule{
     constructor(){
         this.local=local.prototype;
+        this.session=session.prototype;
         this.cookie=cookie.prototype;
     }
     init(){
-        console.log('storage.init()');
+        
     }
 }

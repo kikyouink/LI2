@@ -6,7 +6,6 @@ export class themeModule {
         this.list = ['glass', 'star', 'rabbit'];
     }
     init() {
-        console.log('theme.init()');
         var skin = storage.local.get('theme') || 'glass';
         this.apply(skin);
     }
