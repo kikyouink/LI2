@@ -1,44 +1,37 @@
 {
-  "name": "li",
-  "version": "2.0.0",
-  "description": "hello",
-  "main": "gulpfile.js",
+  "name": "webpack",
+  "version": "1.0.0",
+  "description": "hello world",
+  "main": "index.js",
   "dependencies": {
-    "gulp": "^3.9.1",
-    "gulp-sass": "^3.2.1"
+    "jquery": "^3.3.1",
+    "webpack": "^4.4.1"
   },
   "devDependencies": {
-    "amd-optimize": "^0.6.1",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.11",
-    "eslint": "^4.19.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-jshint": "^2.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-requirejs": "^1.1.1",
-    "gulp-uglify": "^3.0.0",
-    "jshint": "^2.9.5",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^1.1.11",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.1.0",
+    "node-sass": "^4.8.3",
+    "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
-    "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack",
-    "server": "webpack-dev-server --open"
+    "dev": "webpack -d --watch",
+    "prod": "webpack -p"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/q2578443177/LI.git"
+    "url": "git+https://github.com/q2578443177/LI2.git"
   },
-  "author": "sai",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/q2578443177/LI/issues"
+    "url": "https://github.com/q2578443177/LI2/issues"
   },
-  "homepage": "https://github.com/q2578443177/LI#readme"
+  "homepage": "https://github.com/q2578443177/LI2#readme"
 }

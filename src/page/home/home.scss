@@ -1,0 +1,737 @@
+@charset "UTF-8";
+* {
+	overflow: hidden;
+    padding: 0;
+}
+html,body {
+	margin: 0;
+	height: 100%;
+	font-family: "微软雅黑";
+}
+::-webkit-scrollbar {
+	display: none;
+}
+#header,.header-menu,.search-bar,.icon-menu,#slideBar li,#footer,.play-group,.play-status,.play-volume,.play-list,.mv-list {
+    display: flex;
+    align-items: center;
+}
+.play-group,.play-volume,.play-status,.mv-list,.play-list{
+    justify-content: space-around;
+}
+.icon-menu,.header-menu,#footer{
+    justify-content: space-between;
+}
+@keyframes rotating {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+/*---------------主容器------------------*/
+#container {
+    position: absolute;
+    top: 5%;
+	left: calc(50% - 530px);
+	width: 1060px;
+	height: 700px;
+	border-radius: 20px;
+	box-shadow: 10px 10px 50px gray;
+    transition: all 0.5s;
+    cursor: default;
+    user-select: none;
+    color: rgba(255,255,255,0.8);
+    background-size:cover;
+    
+    @media screen and (max-height:650px){
+        #container {
+            zoom: 0.8;
+        }
+    }
+    @media screen and (max-height:750px) and (min-height:650px){
+        #container {
+            zoom: 0.9;
+        }
+    }
+    &.full {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .background{
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+}
+
+/*---------------头部------------------*/
+#header {
+	width: 100%;
+    height: 62px;
+
+    /*---------------导航栏------------------*/
+    .nav {
+        width: 100%;
+        height: 40px;
+
+        .logo,.header-menu {
+            height: 100%;
+        }
+        .logo {
+            float: left;
+            margin-left: 30px;
+            width: 200px;
+            background: url('../../assest/img/logo/logo.png');
+        }
+        .header-menu {
+            margin-left: 50px;
+            padding-right: 20px;
+            font-size: 20px;
+
+            .search-bar,.icon-menu {
+                height: 100%;
+            }
+            .search-bar{
+                .search {
+                    padding: 5px;
+                    width: 100% ;
+                    height: 30px;
+                    border-radius: 1em;
+                }
+            }
+            .icon-menu {
+                width: 280px;
+
+                .user {
+                    overflow: hidden;
+                    width: 120px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    font-size: 15px;
+                    line-height: 32px;
+
+                    .icon-avatar {
+                        float: left;
+                    }
+                    .user-info {
+                        display: none;
+                    }
+
+                }
+            }
+        }
+
+    }
+}
+
+/*---------------主界面------------------*/
+#main {
+	z-index: 1;
+	height: calc(100% - 114px);
+    transition: all 0.3s;
+
+    #slideBar,#info {
+        height: 100%;
+    }
+
+    /*---------------侧边栏------------------*/
+    #slideBar {
+        position: relative;
+        float: left;
+        width: 200px;
+
+        .title {
+            margin-left: 10px;
+        }
+        li {
+            height: 40px;
+            font-size: 15px;
+            line-height: 40px;
+            transition: all 0.3s ease-out;
+            transform: translateX(0px);
+            color: rgba(255,255,255,0.6);
+
+            &.active,&:hover{
+                transform: translateX(7px);
+                background: rgba(0,0,0,0.1);
+            }
+            .iconfont{
+				color: rgba(255,255,255,0.6);
+			}
+        }
+        .playing-box{
+            position: absolute;
+            bottom: 0;
+            padding: 5px;
+            width: 100%;
+
+            .music-pic.sm,.music-info.sm{
+                height: 50px;
+            }
+            .music-pic{
+                &.sm{
+                    float: left;
+                    width: 50px;
+                    background: inherit;
+                    background-size: contain;
+                    transition: all 0.3s;
+            
+                    &:hover {
+                        filter: brightness(0.7);
+                    }
+                }
+            }
+            .music-info {
+                &.sm{
+                    padding-left: 10px;
+                        
+                    .music-name,.singer {
+                        display: block;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                    .music-name {
+                        color: white;
+                    }
+                    .singer {
+                        color: rgba(255,255,255,0.6);
+                    }
+                }
+            }
+        }
+    }
+
+    /*---------------页面------------------*/
+    #page-container{
+        .page{
+            display: none;
+            height: 100%;
+    
+            &.active{
+                display: block;
+            }
+            &.page-found{
+                .box {
+                    padding-top: 40px;
+                    width: 100%;
+                    height: 230px;
+                
+                    .pic-list {
+                        position: relative;
+                        overflow: hidden;
+                        height: 200px;
+                        .pic {
+                            position: absolute;
+                            top: 0;
+                            left: calc(50% - 250px);
+                            list-style: none;
+                            transition: all 0.5s ease-out;
+                
+                            .picimg {
+                                float: left;
+                                width: 500px;
+                                height: 200px;
+                                border: none;
+                            }
+                        }
+                        .p1 {
+                            opacity: 0;
+                            transform: translate(-300px,0) scale(0.81);
+                        }
+                        .p2 {
+                            z-index: 2;
+                            transform: translate(-150px,0) scale(0.81);
+                            filter: brightness(0.8);
+                        }
+                        .p3 {
+                            z-index: 3;
+                            transform: translate(0,0) scale(1);
+                        }
+                        .p4 {
+                            z-index: 2;
+                            transform: translate(150px,0) scale(0.81);
+                            filter: brightness(0.5);
+                        }
+                        .p5 {
+                            opacity: 0;
+                            transform: translate(300px,0) scale(0.81);
+                        }
+                    }
+                    .btn-list{
+                        padding-top: 5px;
+                        width: 100%;
+                        height: 30px;
+                        text-align: center;
+                
+                        a{
+                            display:inline-block;
+                            width: 35px;
+                            height: 2px;
+                            margin:0 2.4px;
+                            background-color: rgba(255,255,255,0.6);
+        
+                            &.active {
+                                background: white !important;
+                            }
+                        }
+                    }
+                
+                }
+                
+                .recommend {
+                    margin: 0 auto;
+                    max-width: 1060px;
+                
+                    h3 {
+                        margin: 4px 20px;
+                    }
+                    .play-list {
+                        padding: 10px;
+                        height: auto;
+                
+                        .uc {
+                            position: relative;
+                            width: 140px;
+                            height: 140px;
+                            transition: filter 0.3s;
+                            filter: brightness(1);
+                
+                            &:hover{
+                                filter: brightness(0.8);
+                            }
+                            .tp {
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                background: rgba(0,0,0,.4);
+                            }
+                            img {
+                                width: 100%;
+                                height: 100%;
+                            }
+                            .bt {
+                                position: absolute;
+                                bottom: 0;
+                                padding: 2px;
+                                width: 100%;
+                                background: rgba(0,0,0,.4);
+                                text-overflow: ellipsis;
+                                font-size: 13px;
+                                line-height: 15px;
+                                
+                            }
+                
+                        }
+                    }
+                }
+            }
+            &.page-favorite{
+                .favorite-info{
+                    height: 265px;
+                
+                    .favorite-pic,.favorite-data {
+                        float: left;
+                        margin: 20px;
+                    }
+                    .favorite-pic {
+                        width: 200px;
+                        height: 200px;
+                        background: url(../../assest/img/avatar/favorite.png);
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        border: 7px solid rgba(255,255,255,0.2);
+                    }
+                    .favorite-data {
+                        width: 60%;
+                        padding: 7px;
+                    }
+                }
+                .song-list{
+                    table {
+                        width: 100%;
+                        text-align: left;
+                        color: rgba(255,255,255,0.6);
+                
+                        td,th {
+                            padding: 6px;
+                            text-indent: 10px;
+                        }
+                        td {
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            font-size: 14px;
+                        }
+                        th{
+                            border-bottom: 1px solid rgba(255,255,255,0.1);
+
+                            &:hover{
+                                background: rgba(0,0,0,0.1);
+                            }
+                            &.th-id {
+                                width: 10%;
+                            } 
+                            &.th-song {
+                                width: 35%;
+                            }           
+                            &.th-singer {
+                                width: 25%;
+                            }          
+                            &.th-album {
+                                width: 30%;
+                            }
+                        }
+                        tr:hover{
+                            background: rgba(0,0,0,0.1);
+                        }
+                    }
+                }
+            }
+            &.page-mv{
+                .tab{
+                    margin: 20px auto;
+                    border-width: 0 1px 0 0;
+                    // box-sizing: border-box;
+                
+                    a{
+                        box-sizing: border-box;
+                        border: {
+                            style: solid;
+                            width: 1px;
+                            color:rgba(255,255,255,0.2);
+                            
+                        }
+                        &:hover,&.active{
+                            background: rgba(0,0,0,0.2);
+                            color: rgba(255,255,255,0.8);
+                        }
+                        &:first-child{
+                            border-radius:10px 0 0 10px;
+                        }
+                        &:last-child{
+                            border-radius: 0 10px 10px 0;
+                        }
+                    }
+                }
+                
+                .mv-list {
+                    max-width: 1060px;
+                    margin: 0 auto;
+                    flex-wrap: wrap;
+                    align-content: flex-start;
+                    padding: 10px;
+                
+                    .mv {
+                        position: relative;
+                        width: 260px;
+                        height: 150px;
+                        margin: 10px 5px;
+                    }
+                }
+            }
+            &.N{
+                text-align: center;
+                font-size: 50px;
+                line-height: 200px;
+                color: rgba(255,255,255,0.8);
+        
+                &.active{
+                    display: block;
+                }
+                &:before{
+                    content: '页面仍在开发中';
+                }
+            }
+        }
+    }
+}
+    
+
+/*---------------底部------------------*/
+#footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+    height: 50px;
+
+    input[type=range]::-webkit-slider-runnable-track {
+		background: rgba(255,255,255,0.8);
+	}
+    .iconfont {
+		color: white;
+	}
+    .play-group,.play-status,.play-volume {
+        height: 100%;
+    }
+    .play-group{
+        width: 200px;
+
+        .prev,.play,.next {
+            display: block;
+        }
+    }
+    .play-status{
+        width: 700px;
+
+        .progress {
+            display: block;
+            width: 500px;
+            height: 3px;
+            background: rgba(255,255,255,0.6);
+
+            .progress-active{
+                float: left;
+                display: block;
+                width: 0px;
+                height: 100%;
+            }
+        }
+        .dot {
+            position: absolute;
+            top: calc(50% - 7.5px);
+            z-index: 100;
+            float: left;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 3px 1px;
+
+        }
+    }
+    .play-volume {
+        width: 200px;
+
+        input[type=range] {
+            padding: 0;
+            width: 80px;
+            height: 20px;
+            border-radius: 10px;
+            background: inherit;
+            -webkit-appearance: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            height: 3px;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            margin-top: -6.5px;
+            width: 15px;
+            height: 15px;
+            border: solid 1px darkgray;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 .125em .125em #3b4547;
+            -webkit-appearance: none;
+        }
+    }
+
+}
+
+/*---------------播放界面------------------*/
+#musicInterface ,#videoInterface {
+	position: absolute;
+	top: 62px;
+	z-index: 10;
+	display: none;
+	width: 100%;
+    height: calc(100% - 112px);
+    overflow:auto;
+
+    .iconfont{
+		color: white;
+	}
+}
+#musicInterface{
+    .music-pic {
+        &.lg{
+            top: 50px;
+            left: 50px;
+            width: 200px;
+            height: 200px;
+        }
+    }
+    .music-info {
+        &.lg{
+            text-align: center;
+        }
+    }
+    .icon-back {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        z-index: 100;
+    }
+    .music-disc {
+        position: relative;
+        height: 380px;
+
+        .disc {
+            left: calc(50% - 157px);
+            top:calc(50% - 157px);
+            width: 300px;
+            height: 300px;
+            border: 7px solid rgba(255,255,255,0.1);
+            background: url(../../assest/img/bg/changpian.png);
+            border-radius: 50%;
+            animation: rotating 30s linear infinite;
+            animation-play-state: paused;
+
+            &.active {
+                animation-play-state: running;
+            }
+        }
+        .disc,.music-pic.lg {
+            position: absolute;
+            border-radius: 50%;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+    }
+    .comment-list{
+        margin-top: 40px;
+        width: 700px;
+        margin: 30px auto;
+
+        .comment-input{
+            width: 100%;
+            height: 50px;
+            margin:20px 0;
+            border: 5px solid rgba(255,255,255,0.2);
+        }
+        .comment{
+            height: auto;
+            border: {
+                style:solid;
+                color: rgba(255,255,255,0.1);
+                width: 0 0 1px 0;
+            }
+
+            position: relative;
+            width: 100%;
+            min-height: 75px;
+
+            .avatar{
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                float: left;
+                margin: 5px;
+                box-shadow: 0 0 5px black;
+            }
+            .content{
+                padding: 10px 5px;
+                width:600px;
+
+                p,span{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
+}
+#videoInterface{
+    .videoPlayer {
+        width: 100%;
+        height: 100%;
+
+        video {
+            width: 100%;
+        }
+    }
+}
+
+/*---------------登录界面------------------*/
+#LSmask {
+	position: absolute;
+	top: 0;
+	z-index: 50;
+	display: none;
+	width: 100%;
+	height: 100%;
+	border-radius: 20px;
+    background: rgba(0,0,0,0.3);
+    
+    .front, .behind {
+        position: absolute;
+        top: 100px;
+        left: calc(50% - 165px);
+        width: 330px;
+        height: 470px;
+        box-shadow: 4px 8px 30px 2px rgba(0,0,0,.4);
+        text-align: center;
+        transition: 0.5s;
+        /* transform-style: preserve-3d; */
+        backface-visibility: hidden;
+    }
+    .front {
+        z-index: 2;
+        transform: rotateY(180deg);
+        border: 5px solid rgba(255,255,255,0.3);
+
+        &.active {
+            transform: rotateY(0deg);
+        }
+        .LSlogo {
+            height: 150px;
+            font-size: 50px;
+            line-height: 150px;
+            color: rgba(255,255,255,0.8);
+
+            .icon-cloud {
+                font-size: 50px;
+            }
+        }
+        .tab{
+			a{
+				color: rgba(255,255,255,0.6);
+		
+				&:hover{
+					color: rgba(255,255,255,0.8);
+				}
+				&.active{
+					color:white;
+				}
+			}
+		}
+		.slider {
+			background: rgba(255,255,255,0.8);
+		}
+        .formGroup {
+            overflow: hidden;
+            margin: 25px 0;
+            width: 200%;
+            height: 170px;
+
+            form {
+                float: left;
+                width: 50%;
+
+            }
+        }
+    }
+    .behind {
+        transform: rotateY(180deg);
+
+        &.active {
+            font-size: 30px;
+            line-height: 140px;
+            transform: rotateY(0deg);
+        }
+        .icon-success {
+            font-size: 120px;
+        }
+    }
+}
