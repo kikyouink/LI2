@@ -1,3 +1,15 @@
 #container{
 	background:url('../../src/assest/img/bg/rabbit.jpg') ;
 }
+.progress{
+	background:rgba(204,105,105,0.2) !important;
+}
+.progress-active{
+	background: #f78ea0 !important;
+}
+input[type=range]::-webkit-slider-runnable-track {
+	background: #f78ea0 !important;
+}
+.icon-loop,.icon-vol{
+	color:#f78ea0 !important;
+}

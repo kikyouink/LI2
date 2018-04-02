@@ -174,6 +174,7 @@ let storage = new storageModule();
     $('.user').click(function () {
         var bool = net.checkLogin();
         if (!bool) ui.LS.show();
+        else $(".user-info").fadeToggle();
     });
     //提交数据
     $('.sumbit').click(function () {
