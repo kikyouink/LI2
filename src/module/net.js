@@ -1,21 +1,16 @@
-import {storageModule} from './storage';
+import { storageModule } from './storage';
+import { uiModule } from '../module/ui';
 
-let storage=new storageModule();
+let storage = new storageModule();
+let ui = new uiModule();
 export class netModule {
     constructor() {
         this.lsUrl = '../src/server/ls.php';
         this.musicUrl = '../src/server/music.php';
     }
     init() {
-        var bool=this.checkLogin();
-        console.log(bool);
-        if(bool){
-            var username = storage.cookie.get('username');
-            if (username) $('.user-name').text(username);
-        }
-    }
-    checkLogin() {
-        return storage.cookie.get('username');
+        var username = this.checkLogin();
+        if (username) $('.user-name').text(username);
     }
     checkReg(obj, mode) {
         for (var i in obj) {
@@ -30,9 +25,26 @@ export class netModule {
             case 'remix': reg = /[^A-Za-z0-9_\-\u4e00-\u9fa5]+/g; break;//包括汉字
             default: reg = /\W+/g; break;
         };
-        if (reg.test(obj.username) == true) return 'entry illegal';
-        else return 'legal';
+        if (reg.test(obj.username) == true) return 'character illegal';
+        return 'legal';
     }
+    loadPage(type, callback) {
+        var url = this.musicUrl;
+        $.post(url, { page: type }, (result) => {
+            console.log('接收page-' + type + '数据成功');
+            callback(result);
+        }, 'json');
+
+    }
+    checkLogin() {
+        return storage.cookie.get('username');
+    }
+    loginOut() {
+        storage.cookie.clear();
+        $(".user-name").text('欢迎！');
+        ui.showAlert('已退出，请重新登录');
+    }
+    //登录注册2 in 1
     ls(obj, suc, err) {
         var url = this.lsUrl;
         var prompt;
@@ -50,19 +62,11 @@ export class netModule {
             else err(prompt);
         }, 'text');
     }
+    //obj包含搜索的值与搜索模式
     sreach(obj) {
         var url = this.musicUrl;
         $.post(url, obj, (result) => {
             $('.page.page-search').addClass('active').siblings().removeClass('active');
-            // $('#slideBar li')
         });
-    }
-    loadPage(type,callback) {
-        var url = this.musicUrl;
-        $.post(url, { page: type }, (result) => {
-            console.log('接收page-' + type + '数据成功:'+result);
-            callback(result);
-        }, 'json');
-
     }
 }

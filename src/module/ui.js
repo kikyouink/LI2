@@ -38,7 +38,7 @@ class creat {
         }
     }
     commentList() {
-        $('.commentList').putDiv('comment', '', media.commentList.length);
+        $('.commentList').putDiv('comment', '',data.length);
         // console.log(data);
         for (var i = 0; i < media.commentList.length; i++) {
             var comment = $('.comment').eq(i);
@@ -99,16 +99,20 @@ export class uiModule {
         this.flash = flash.prototype;
     }
     init() {
-        
+
     }
     full() {
         $('#container').removeAttr('style').toggleClass('full');
     }
     showAlert(text, callback) {
-        var alert = $('body').putDiv('alert normal', text);
+        var alert = $('body').putDiv('alert');
+        var error = alert.put('i', 'iconfont icon-error');
+        var msg = alert.put('span', '', text);
+        alert.fadeIn();
         setTimeout(function () {
-            alert.fadeOut();
-            alert.remove();
+            alert.fadeOut(function(){
+                alert.remove();
+            });
             if (callback) callback();
         }, 2000);
     }

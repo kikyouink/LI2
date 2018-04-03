@@ -386,7 +386,7 @@ html,body {
                         padding: 7px;
                     }
                 }
-                .song-list{
+                .favorite-list{
                     table {
                         width: 100%;
                         text-align: left;
@@ -715,13 +715,12 @@ html,body {
     .front, .behind {
         position: absolute;
         top: 100px;
-        left: calc(50% - 165px);
+        left: calc(50% - 170px);
         width: 330px;
         height: 470px;
         box-shadow: 4px 8px 30px 2px rgba(0,0,0,.4);
         text-align: center;
         transition: 0.5s;
-        /* transform-style: preserve-3d; */
         backface-visibility: hidden;
     }
     .front {

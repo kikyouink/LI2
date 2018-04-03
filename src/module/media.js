@@ -1,27 +1,24 @@
+import { uiModule } from '../module/ui';
+let ui = new uiModule();
 export class mediaModule {
     constructor() {
         let param = {
             type: 'audio',
             playMode: 'loop',
-            url: "server/search.php",
             status: undefined,
             statusInfo: undefined,
+            playList: undefined,
             mvList: undefined,
             favoriteList: undefined,
-            playList: undefined,
             commentList: undefined,
         }
         for (let i in param) {
             this[i] = param[i];
         }
     }
-    showInfo() {
-        console.log('this.type: ' + this.type);
-        console.log('this.statusInfo: ' + this.statusInfo.singer);
-    }
     prepare() {
-        this.updateInfo(this.favoriteList[0]);
         this.statusInfo = this.favoriteList[0];
+        this.updateInfo(this.statusInfo);
     }
     star(mediaInfo) {
         var src = "http://music.163.com/song/media/outer/url?id=" + mediaInfo.src + ".mp3";
@@ -34,6 +31,7 @@ export class mediaModule {
     }
     new(src) {
         var m;
+        //判断是否切换类型
         if (this.status && this.status[0].tagName.toLocaleLowerCase() == this.type) {
             this.status[0].src = src;
             this.status.trigger('load');
@@ -41,30 +39,33 @@ export class mediaModule {
         else {
             if (this.status) this.status.remove();
             if (this.type == 'audio') {
-                m = $('<audio></audio>');
-                m.attr('src', src);
-                $('#backgound').append(m);
+                m = $('body').put('audio');
+                m.attr({
+                    'src': src,
+                    'type': 'audio/mp3',
+                });
             }
             else {
                 //new Video()无法使用，既然有new Audio为什么不能有new Video
-                m = $('.videoPlayer').put('video', 'media');
+                m = $('.videoPlayer').put('video');
                 m.attr({
                     'src': src,
                     'type': 'video/mp4',
                 });
             }
+            //为新创建的audio/video绑定事件
             this.init(m);
             this.status = m;
         }
-        return this.status;
+        return m;
     }
     init(m) {
         var obj = {
             onloadstart: () => {
-                console.info('开始加载:' + this.statusInfo.singer + ' - ' + this.statusInfo.song);
-                $('.dot').addClass('active');
-                this.updateInfo(this.statusInfo);
                 this.reset();
+                this.updateInfo(this.statusInfo);
+                $('.dot').addClass('active');
+                console.info('开始加载:' + this.statusInfo.singer + ' - ' + this.statusInfo.song);
             },
             onloadedmetadata: () => {
                 this.updateProgressAuto();
@@ -72,17 +73,20 @@ export class mediaModule {
             oncanplay: () => {
                 var play = $('.icon-play');
                 play.addClass('icon-pause').removeClass('icon-play');
+                $('.disc').addClass('active');
                 $('.dot').removeClass('active');
             },
             onplayying: () => {
-                $('.dot').addClass('active');
+                $('.disc').addClass('active');
+                $('.dot').removeClass('active');
             },
             onerror: () => {
-                console.error('加载出错...');
-                // this.next();
+                this.reset();
+                this.next();
+                ui.showAlert('加载出错...');
             },
             onstalled: () => {
-                $('.dot').removeClass('active');
+                $('.dot').addClass('active');
                 console.info('缓冲中...');
             },
             onended: () => {
@@ -101,50 +105,32 @@ export class mediaModule {
     }
     pause() {
         this.toggle();
-        this.volSlowDown(function () {
+        this.volSlowDown(() => {
             this.status.trigger('pause');
         });
     }
     next() {
         var next;
-        if (this.type == 'audio') {
-            switch (this.playMode) {
-                case 'loop1':
-                    this.star(this.statusInfo)
-                        ; break;
-                case 'random':
-                    this.star(this.favoriteList.findRandom())
-                        ; break;
-                default:
-                    next = this.favoriteList.findNext(this.statusInfo);
-                    this.star(next)
-                        ; break;
-            }
-        }
-        else {
-            next = this.mvList.findNext(this.statusInfo);
-            this.star(next);
+        switch (this.playMode) {
+            case 'loop1':
+                this.star(this.statusInfo); break;
+            case 'random':
+                this.star(this.favoriteList.findRandom()); break;
+            default:
+                next = this.favoriteList.findNext(this.statusInfo);
+                this.star(next); break;
         }
     }
     prev() {
         var prev;
-        if (this.type == 'audio') {
-            switch (this.playMode) {
-                case 'loop1':
-                    this.star(this.statusInfo)
-                        ; break;
-                case 'random':
-                    this.star(this.favoriteList.findRandom())
-                        ; break;
-                default:
-                    prev = this.favoriteList.findPrev(this.statusInfo);
-                    this.star(prev)
-                        ; break;
-            }
-        }
-        else {
-            prev = this.mvList.findPrev(this.statusInfo);
-            this.star(prev);
+        switch (this.playMode) {
+            case 'loop1':
+                this.star(this.statusInfo); break;
+            case 'random':
+                this.star(this.favoriteList.findRandom()); break;
+            default:
+                prev = this.favoriteList.findPrev(this.statusInfo);
+                this.star(prev); break;
         }
     }
     changePlayMode(mode) {
@@ -163,12 +149,12 @@ export class mediaModule {
     }
     updateInfo(mediaInfo) {
         var avatar = mediaInfo.avatar;
-        //url括号里面还要加引号，好坑
         $('.music-pic').css('background-image', "url('" + avatar + "?param=200y200')");
         $('.music-name').text(mediaInfo.song);
         $('.singer').text(mediaInfo.singer);
     }
     updateProgress(e) {
+        if (!this.status) return;
         var width = e.pageX - $('.progress').offset().left;
         var all = this.status[0].duration;
         this.status[0].currentTime = width * all / $('.progress').width();
@@ -193,15 +179,11 @@ export class mediaModule {
         }, 500);
     }
     reset() {
-        $('.progress-active').removeAttr('style');
         var pause = $('.icon-pause');
         pause.addClass('icon-play').removeClass('icon-pause');
         $('.disc').removeClass('active');
+        $('.progress-active').css('width', '0px');
 
-    }
-    loadSingerSrc(mediaInfo) {
-        var src = '';
-        return src;
     }
     volChange(value) {
         if (!this.status) return;

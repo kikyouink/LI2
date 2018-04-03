@@ -43,6 +43,7 @@ input {
     }
     &.search{
         background: #e4e9ec;
+        text-indent: 15px; 
         color:gray;
         &::-webkit-input-placeholder {
             color:gray;
@@ -144,4 +145,26 @@ form {
     height: 100%;
     flex-direction: column;
     align-items: center;
+}
+
+//提示
+.alert{
+    display: none;
+    width: 260px;
+    height: 80px;
+    background: rgba(0,0,0,.8);
+    color: white;
+    text-align: center;
+    line-height: 80px;
+    position: absolute;
+    left: calc(50% - 130px);
+    top: 300px;
+    border-radius: 10px;
+    z-index: 200;
+    font-size: 18px;
+
+    .icon-error{
+        font-size: 30px;
+        vertical-align: middle;
+    }
 }
