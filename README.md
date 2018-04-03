@@ -1,4 +1,5 @@
-# LI2
+# LI云音乐2.0
+[简书主页](http://www.jianshu.com/u/b597ad508142)<br>
 此项目为前作[LI](https://github.com/q2578443177/LI)的进阶版本<br>
 使用es6+jq+ajax+webpack+php+mysql构建。未来将推出vue版本和移动适配。<br>
 目前主要练习前端模块化/自动化与后台数据交互<br>
