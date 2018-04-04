@@ -6,10 +6,7 @@
     $createSinger = "create table if not exists singer (
         id int(6) unsigned auto_increment primary key, 
         name varchar(30) not null,
-        avatar varchar(100) not null,
-        album_num int(6),
-        song_num int(6),
-        mv_num int(6)
+        avatar varchar(100) not null
     )";
     mysqli_query($conn, $createSinger) or die(mysqli_error($conn)); 
 
@@ -46,6 +43,7 @@
     $creatComment = "create table if not exists comment (
         id int(6) unsigned auto_increment primary key, 
         content varchar(100) not null,
+        up int(6) default 0,
         time timestamp,
         user int(6) unsigned not null,
         song int(6) unsigned not null,
@@ -57,10 +55,9 @@
     //创建用户信息
     $creatUserInfo = "create table if not exists userinfo (
         id int(6) unsigned auto_increment primary key, 
-        nikname varchar(15) not null,
+        nickname varchar(15) not null,
         avatar varchar(100),
         sign varchar(30),
-        favorite int(6),
         user int(6) unsigned not null,
         foreign key(user) references user(id)
     )";
@@ -70,11 +67,12 @@
     $creatFavorite = "create table if not exists favorite (
         id int(6) unsigned auto_increment primary key, 
         userInfo int(6) unsigned not null,
+        time date,
         foreign key(userInfo) references userInfo(id)
-    );";
+    )";
     mysqli_query($conn, $creatFavorite) or die(mysqli_error($conn));
 
-    //创建关系表
+    //创建用户歌单关系表
     $creatRelation = "create table if not exists song_favorite (
         id int(6) unsigned auto_increment primary key, 
         song int(6) unsigned not null,
@@ -83,4 +81,25 @@
         foreign key(favorite) references favorite(id)
     )";
     mysqli_query($conn, $creatRelation) or die(mysqli_error($conn));
+
+    // /----------------------------------------------------------/
+
+    //创建公共歌单
+    $creatPlaylist = "create table if not exists playlist (
+        id int(6) unsigned auto_increment primary key, 
+        name int(6) unsigned not null,
+        prcSrc varchar(100) not null,
+        count int(6) unsigned default 0
+    )";
+    mysqli_query($conn, $creatPlaylist) or die(mysqli_error($conn));
+
+    //创建公共歌单关系表
+    $creatRelation1 = "create table if not exists song_playlist (
+        id int(6) unsigned auto_increment primary key, 
+        song int(6) unsigned not null,
+        playlist int(6) unsigned not null,
+        foreign key(song) references song(id),
+        foreign key(playlist) references playlist(id)
+    )";
+    mysqli_query($conn, $creatRelation1) or die(mysqli_error($conn));
 ?>

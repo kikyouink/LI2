@@ -10,7 +10,10 @@ export class netModule {
     }
     init() {
         var username = this.checkLogin();
-        if (username) $('.user-name').text(username);
+        if (username) {
+            $('.user-name').text(username);
+            this.getUserInfo();
+        }
     }
     checkReg(obj, mode) {
         for (var i in obj) {
@@ -28,21 +31,40 @@ export class netModule {
         if (reg.test(obj.username) == true) return 'character illegal';
         return 'legal';
     }
-    loadPage(type, callback) {
-        var url = this.musicUrl;
-        $.post(url, { page: type }, (result) => {
-            console.log('接收page-' + type + '数据成功');
-            callback(result);
-        }, 'json');
-
-    }
     checkLogin() {
         return storage.cookie.get('username');
     }
+    getUserInfo() {
+        var url = this.musicUrl;
+        var obj = { req: 'userInfo' };
+        console.log('getUserInfo');
+        $.post(url, obj, (result) => {
+            this.userInfo = result;
+            console.log(result);
+        }, 'json');
+    }
     loginOut() {
-        storage.cookie.clear();
-        $(".user-name").text('欢迎！');
-        ui.showAlert('已退出，请重新登录');
+        var url = this.musicUrl;
+        var obj = { action: 'loginOut' };
+        $.post(url, obj, (result) => {
+            $(".user-name").text('欢迎！');
+            ui.showAlert('已退出，请重新登录', 1);
+        });
+        storage.clear();
+    }
+    loadPage(page, suc, err) {
+        var url = this.musicUrl;
+        console.log(this.musicUrl);
+        var obj = { req: page };
+        $.post(url, obj, (result) => {
+            console.log(result);
+            if (result == 'not login') err();
+            else {
+                console.log('接收' + page + '数据成功');
+                suc(result);
+            }
+        });
+
     }
     //登录注册2 in 1
     ls(obj, suc, err) {
@@ -55,8 +77,10 @@ export class netModule {
                 case 'user not exsits': prompt = '用户不存在'; break;
                 case 'user exsits': prompt = '用户名已存在，请登录'; break;
                 case 'sign succeed': prompt = '注册成功'; break;
+                default: ui.showAlert(result);
             }
             if (result == 'login succeed' || result == 'sign succeed') {
+                this.getUserInfo();
                 suc(prompt);
             }
             else err(prompt);

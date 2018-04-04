@@ -32,7 +32,9 @@ let storage = new storageModule();
     $('.icon-full').click(ui.full);
 
     //退出登录
-    $('.icon-setting').click(net.loginOut);
+    $('.icon-setting').click(function () {
+        net.loginOut();
+    });
 
     //侧边栏
     $('#slideBar li').click(function () {
@@ -42,32 +44,50 @@ let storage = new storageModule();
         $(this).addClass('active');
         if ($(this).getParent(2).index() == 1) index += 4;
         var page = $('.page').eq(index);
-        var favoriteList = JSON.parse(storage.session.get('favoriteList'));
-        //无缓存
-        if (!favoriteList) {
-            //获取页面内容
-            var type = page.attr('class').split(' ')[1].replace(/page-/g, '');
-            //显示加载页面
-            $('.page-loading').addClass('active');
-            net.loadPage(type, function (result) {
-                storage.session.set('favoriteList', JSON.stringify(result));
-                media.favoriteList = result;
-                media.prepare();
-                ui.creat.favoriteList(result);
-                //加载页面移除
-                $('.page-loading').removeClass('active');
-                page.addClass('active');
-            });
+        var pagetype = page.attr('class').split(' ')[1];
+
+        //失败是成功之母，所以放前面。而且各页失败数据都差不多，所以是通用
+        //而成功后执行的命令就各不相同了
+        function err() {
+            ui.showAlert('获取数据失败', 3);
         }
-        else {
-            //有缓存并且为初始化
-            if ($('tbody').children().length == 2) {
-                media.favoriteList = favoriteList;
-                media.prepare();
-                ui.creat.favoriteList(favoriteList);
-            }
-            page.addClass('active');
+        var load;
+        switch (pagetype) {
+            case 'page-favorite':
+                function suc1() {
+                    storage.session.set('favoriteList', JSON.stringify(result));
+                    $('.page-loading').removeClass('active');
+                }
+                function suc2(result) {
+                    console.log(result);
+                    media.favoriteList = result;
+                    media.prepare();
+                    ui.creat.favoriteList(result);
+                    page.addClass('active');
+                }
+                var favoriteList = JSON.parse(storage.session.get('favoriteList'));
+                if (!favoriteList) {
+                    //显示加载页面
+                    load = true;
+                    $('.page-loading').addClass('active');
+                    var suc = function (result) {
+                        suc1();
+                        suc2(result);
+                    }
+                }
+                else {
+                    //有缓存并且为初始化
+                    if ($('tbody').children().length == 2) {
+                        result = favoriteList;
+                        suc2(result);
+                    }
+                }
+                break;
+            case 'page-found':;break;
+            case 'page-mv':;break;
+
         }
+        if (load) net.loadPage(pagetype, suc, err);
 
     });
 
@@ -191,7 +211,7 @@ let storage = new storageModule();
 
         //失败是成功之母，所以要放前面
         function err(prompt) {
-            ui.showAlert(prompt);
+            ui.showAlert(prompt, 2);
             $('.formGroup').clearP();
             that.removeAttr('disabled').text(text);
         }

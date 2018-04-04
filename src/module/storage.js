@@ -8,6 +8,9 @@ class local{
     delete(key) {
         localStorage.removeItem(key);
     }
+    clear(){
+        localStorage.clear();
+    }
 }
 class session{
     set(key, value) {
@@ -18,6 +21,9 @@ class session{
     }
     delete(key) {
         sessionStorage.removeItem(key);
+    }
+    clear(){
+        sessionStorage.clear();
     }
 }
 class cookie{
@@ -51,5 +57,11 @@ export class storageModule{
     }
     init(){
         
+    }
+    clear(){
+        console.log(this.local);
+        this.local.clear();
+        this.session.clear();
+        this.cookie.clear();
     }
 }
