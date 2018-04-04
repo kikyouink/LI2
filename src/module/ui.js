@@ -1,5 +1,5 @@
 
-class creat {
+class update {
     playList(data) {
         $('.playList').putDiv('uc', '', 5);
         for (var i = 0; i < data.length; i++) {
@@ -15,14 +15,16 @@ class creat {
         var th = ['id', 'song', 'singer', 'album'];
         var num1 = data.length;
         var num2 = th.length;
-        $('tbody').put('tr', '', '', num1);
-        $('tr').not("tr:first-child").put('td', '', '', 4);
         for (var i = 0; i < num1; i++) {
-            var tr = $('tr').eq(i + 1);
-            for (var j = 0; j < num2; j++) {
-                var td = tr.children().eq(j);
-                td.text(data[i][th[j]]);
-            }
+            var tr = $('tbody').put('tr');
+            // console.log(tr);
+            tr.put('td','a','a',4);
+            // $('tr').put('td', '', '', 4);
+            // console.log(tr.index());
+            // for (var j = 0; j < num2; j++) {
+            //     var td = tr.children().eq(j);
+            //     td.text(data[i][th[j]]);
+            // }
         }
     }
     mvList(data) {
@@ -94,7 +96,7 @@ class flash {
 }
 export class uiModule {
     constructor() {
-        this.creat = creat.prototype;
+        this.update = update.prototype;
         this.LS = LS.prototype;
         this.flash = flash.prototype;
     }
@@ -124,5 +126,9 @@ export class uiModule {
             if (callback) callback();
         }, 2000);
         console.log(text);
+    }
+    loadDone(page) {
+        page.addClass('active');
+        $('.page-loading').removeClass('active');
     }
 }

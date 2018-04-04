@@ -59,26 +59,18 @@
         avatar varchar(100),
         sign varchar(30),
         user int(6) unsigned not null,
+        time date,
         foreign key(user) references user(id)
     )";
     mysqli_query($conn, $creatUserInfo) or die(mysqli_error($conn));
 
-    //创建喜欢的音乐
-    $creatFavorite = "create table if not exists favorite (
-        id int(6) unsigned auto_increment primary key, 
-        userInfo int(6) unsigned not null,
-        time date,
-        foreign key(userInfo) references userInfo(id)
-    )";
-    mysqli_query($conn, $creatFavorite) or die(mysqli_error($conn));
-
     //创建用户歌单关系表
     $creatRelation = "create table if not exists song_favorite (
         id int(6) unsigned auto_increment primary key, 
-        song int(6) unsigned not null,
         favorite int(6) unsigned not null,
+        song int(6) unsigned not null,
         foreign key(song) references song(id),
-        foreign key(favorite) references favorite(id)
+        foreign key(favorite) references userinfo(id)
     )";
     mysqli_query($conn, $creatRelation) or die(mysqli_error($conn));
 

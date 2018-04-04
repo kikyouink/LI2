@@ -52,16 +52,20 @@ export class netModule {
         });
         storage.clear();
     }
-    loadPage(page, suc, err) {
+    loadStar(page, suc, err) {
         var url = this.musicUrl;
-        console.log(this.musicUrl);
         var obj = { req: page };
+        $('.page-loading').addClass('active');
         $.post(url, obj, (result) => {
             console.log(result);
-            if (result == 'not login') err();
-            else {
+            try{
+                result = JSON.parse(result);
                 console.log('接收' + page + '数据成功');
                 suc(result);
+            }
+            catch(e){
+                console.log(e);
+                err();
             }
         });
 

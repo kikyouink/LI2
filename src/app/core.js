@@ -36,61 +36,6 @@ let storage = new storageModule();
         net.loginOut();
     });
 
-    //侧边栏
-    $('#slideBar li').click(function () {
-        var index = $(this).index();
-        //为什么这里不用siblings()?
-        $('#slideBar li.active,.page.active').removeClass('active');
-        $(this).addClass('active');
-        if ($(this).getParent(2).index() == 1) index += 4;
-        var page = $('.page').eq(index);
-        var pagetype = page.attr('class').split(' ')[1];
-
-        //失败是成功之母，所以放前面。而且各页失败数据都差不多，所以是通用
-        //而成功后执行的命令就各不相同了
-        function err() {
-            ui.showAlert('获取数据失败', 3);
-        }
-        var load;
-        switch (pagetype) {
-            case 'page-favorite':
-                function suc1() {
-                    storage.session.set('favoriteList', JSON.stringify(result));
-                    $('.page-loading').removeClass('active');
-                }
-                function suc2(result) {
-                    console.log(result);
-                    media.favoriteList = result;
-                    media.prepare();
-                    ui.creat.favoriteList(result);
-                    page.addClass('active');
-                }
-                var favoriteList = JSON.parse(storage.session.get('favoriteList'));
-                if (!favoriteList) {
-                    //显示加载页面
-                    load = true;
-                    $('.page-loading').addClass('active');
-                    var suc = function (result) {
-                        suc1();
-                        suc2(result);
-                    }
-                }
-                else {
-                    //有缓存并且为初始化
-                    if ($('tbody').children().length == 2) {
-                        result = favoriteList;
-                        suc2(result);
-                    }
-                }
-                break;
-            case 'page-found':;break;
-            case 'page-mv':;break;
-
-        }
-        if (load) net.loadPage(pagetype, suc, err);
-
-    });
-
     //tab通用
     $('.tab a').click(function () {
         $(this).addClass('active');
@@ -196,6 +141,55 @@ let storage = new storageModule();
         var bool = net.checkLogin();
         if (!bool) ui.LS.show();
         else $(".user-info").fadeToggle();
+    });
+    //加载页面内容
+    $('#slideBar li').click(function () {
+        //自己点自己是无效的
+        if ($('#slideBar li.active') == $(this)) return;
+
+        var index = $(this).index();
+        //为什么这里不用siblings()?
+        $('#slideBar li.active,.page.active').removeClass('active');
+        $(this).addClass('active');
+        if ($(this).getParent(2).index() == 1) index += 4;
+        var page = $('.page').eq(index);
+        var pagetype = page.attr('class').split(' ')[1];
+
+        //失败是成功之母，所以放前面。而且各页失败数据都差不多，所以是通用，需要先声明
+        //而成功后执行的命令就各不相同了
+        function err() {
+            ui.showAlert('获取数据失败', 3);
+        }
+        switch (pagetype) {
+            case 'page-favorite':
+                var suc = function (result) {
+                    console.log(result);
+                    console.log(media.favoriteList);
+                    media.favoriteList = media.favoriteList.concat(result);
+                    console.log( media.favoriteList);
+                    media.prepare();
+                    ui.update.favoriteList(result);
+                    //加载完毕
+                    ui.loadDone(page);
+                }
+                break;
+            case 'page-found': ui.loadDone(page); break;
+            case 'page-mv': ui.loadDone(page); break;
+            default: ui.loadDone(page);
+
+        }
+        //加载开始
+        net.loadStar(pagetype, suc, err);
+
+    });
+    //滚动到底部自动刷新
+    $(".page-favorite").scroll(() => {
+        var divHight = $(".page-favorite").height();
+        var scrollHight = $(this)[0].scrollHeight;
+        var scrollTop = $(this)[0].scrollTop;
+        if (scrollTop + divHight >= scrollHight) {
+
+        }
     });
     //提交数据
     $('.sumbit').click(function () {

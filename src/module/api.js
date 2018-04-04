@@ -42,8 +42,8 @@ export function api() {
 			className = className || '';
 			innerHTML = innerHTML || '';
 			//批量put
-			var list = [];
 			if (num) {
+				var list = [];
 				for (var i = 0; i < num; i++) {
 					var node = $("<" + type + "></" + type + ">");
 					node.addClass(className);
@@ -63,8 +63,8 @@ export function api() {
 		putDiv: function (className, innerHTML, num) {
 			className = className || '';
 			innerHTML = innerHTML || '';
-			var list = [];
 			if (num) {
+				var list = [];
 				for (var i = 0; i < num; i++) {
 					var div = $("<div></div>");
 					div.addClass(className);

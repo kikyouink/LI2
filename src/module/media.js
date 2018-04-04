@@ -7,10 +7,10 @@ export class mediaModule {
             playMode: 'loop',
             status: undefined,
             statusInfo: undefined,
-            playList: undefined,
-            mvList: undefined,
-            favoriteList: undefined,
-            commentList: undefined,
+            playList: [],
+            mvList: [],
+            favoriteList: [],
+            commentList: [],
         }
         for (let i in param) {
             this[i] = param[i];
@@ -30,13 +30,13 @@ export class mediaModule {
         this.volSlowUp();
     }
     new(src) {
-        var m;
         //判断是否切换类型
         if (this.status && this.status[0].tagName.toLocaleLowerCase() == this.type) {
             this.status[0].src = src;
             this.status.trigger('load');
         }
         else {
+            var m;
             if (this.status) this.status.remove();
             if (this.type == 'audio') {
                 m = $('body').put('audio');
@@ -57,7 +57,7 @@ export class mediaModule {
             this.init(m);
             this.status = m;
         }
-        return m;
+        return this.status;
     }
     init(m) {
         var obj = {
