@@ -13,6 +13,7 @@ if ($type == 'login') {
         echo 'user not exsits';
     } else {
         if ($words == $row['password']) {
+            setcookie("user_id", $row['id'], time()+24*3600*7);
 			$_SESSION['user_id'] = $row['id'];
 			echo 'login succeed';
         } else {
@@ -35,6 +36,7 @@ else {
         if (mysqli_query($conn, $insert)) {
             echo "sign succeed";
             $user_id = mysqli_insert_id($conn);
+            setcookie("user_id", $user_id, time()+24*3600*7);
             $_SESSION['user_id'] = $user_id;
 
             //初始化用户信息

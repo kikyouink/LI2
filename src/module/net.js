@@ -9,9 +9,9 @@ export class netModule {
         this.musicUrl = '../src/server/music.php';
     }
     init() {
-        var username = this.checkLogin();
-        if (username) {
-            $('.user-name').text(username);
+        var bool = this.checkLogin();
+        console.log("bool:"+bool);
+        if (bool != 0) {
             this.getUserInfo();
         }
     }
@@ -32,15 +32,20 @@ export class netModule {
         return 'legal';
     }
     checkLogin() {
-        return storage.cookie.get('username');
+        var url = this.musicUrl;
+        var obj = { req: 'checkLogin' };
+        $.post(url, obj, (result) => {
+            console.log(result);
+            return result;
+        }, 'json');
     }
     getUserInfo() {
         var url = this.musicUrl;
         var obj = { req: 'userInfo' };
-        console.log('getUserInfo');
         $.post(url, obj, (result) => {
             this.userInfo = result;
             console.log(result);
+            $('.user-name').text(result.nickname);
         }, 'json');
     }
     loginOut() {
@@ -58,12 +63,12 @@ export class netModule {
         $('.page-loading').addClass('active');
         $.post(url, obj, (result) => {
             console.log(result);
-            try{
+            try {
                 result = JSON.parse(result);
                 console.log('接收' + page + '数据成功');
                 suc(result);
             }
-            catch(e){
+            catch (e) {
                 console.log(e);
                 err();
             }

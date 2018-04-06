@@ -15,16 +15,16 @@ class update {
         var th = ['id', 'song', 'singer', 'album'];
         var num1 = data.length;
         var num2 = th.length;
+        var str='';
         for (var i = 0; i < num1; i++) {
             var tr = $('tbody').put('tr');
-            // console.log(tr);
             tr.put('td','a','a',4);
-            // $('tr').put('td', '', '', 4);
-            // console.log(tr.index());
-            // for (var j = 0; j < num2; j++) {
-            //     var td = tr.children().eq(j);
-            //     td.text(data[i][th[j]]);
-            // }
+            $('tr').put('td', '', '', 4);
+            console.log(tr.index());
+            for (var j = 0; j < num2; j++) {
+                var td = tr.children().eq(j);
+                td.text(data[i][th[j]]);
+            }
         }
     }
     mvList(data) {

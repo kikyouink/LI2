@@ -211,7 +211,7 @@ let storage = new storageModule();
         }
         function suc(prompt) {
             //7天后过期
-            storage.cookie.set('username', userInfo.username, 7);
+            // storage.cookie.set('username', userInfo.username, 7);
             $('.user-name').text(userInfo.username);
             $('.behind p').text(prompt);
             ui.LS.preserve(function () {

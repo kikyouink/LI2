@@ -3,6 +3,17 @@ function searchMv()
 {
     echo "Hello world!";
 }
+function checkLogin()
+{
+    global $conn;
+    if (isset($_COOKIE['user_id'])) {
+        $_SESSION['user_id'] = $_COOKIE['user_id'];
+        echo 1;
+    } else {
+        echo 0;
+    }
+
+}
 function getUserInfo()
 {
     global $conn;
