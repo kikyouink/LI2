@@ -11,7 +11,3 @@ npm i
 webpack-dev-server
 ```
 **外观基本没什么变化，主要是改了后台与架构**
-![歌单](https://upload-images.jianshu.io/upload_images/5750842-14738c2bd576284a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-![播放](https://upload-images.jianshu.io/upload_images/5750842-153eb9b8d5aeb0f6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
