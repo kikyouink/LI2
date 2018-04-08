@@ -72,7 +72,7 @@ export class netModule {
             star: this.index++
         }
         $('.page-loading').addClass('active');
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject)=>{
             $.post(url, obj, (result) => {
                 console.log(result);
                 try {
@@ -80,7 +80,7 @@ export class netModule {
                     resolve(result);
                 }
                 catch (e) {
-                    console.log("err");
+                    this.index--;
                     reject(result);
                 }
             });
