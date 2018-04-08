@@ -158,17 +158,22 @@ let storage = new storageModule();
         var page = $('.page').eq(index);
         var pagetype = page.attr('class').split(' ')[1];
         var list = page.attr('class').split(' ')[1].replace(/page-/g, "") + "List";
-
-        //加载开始
-        net.loadStar(pagetype).then((result) => {
-            media.reciveList(list, result);
+        if(page.hasClass('loaded')){
+            console.log('已缓存');
             net.loadDone(page);
-        })
-            .catch((e) => {
-                console.log(e);
-                ui.showErr(e);
+        }
+        else{
+            //加载开始
+            net.loadStar(pagetype).then((result) => {
+                media.reciveList(list, result);
                 net.loadDone(page);
-            });
+            })
+                .catch((e) => {
+                    console.log(e);
+                    ui.showErr(e);
+                    net.loadDone(page);
+                });
+        }
 
     });
     //滚动到底部自动刷新

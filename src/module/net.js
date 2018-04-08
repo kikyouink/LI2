@@ -87,7 +87,7 @@ export class netModule {
         });
     }
     loadDone(page) {
-        page.addClass('active');
+        page.addClass('active loaded');
         $('.page-loading').removeClass('active');
     }
     //登录注册2 in 1
