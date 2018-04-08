@@ -30,6 +30,16 @@ html,body {
         transform: rotate(360deg);
     }
 }
+@media screen and (max-height:650px){
+    #container {
+        zoom: 0.8;
+    }
+}
+@media screen and (max-height:750px) and (min-height:650px){
+    #container {
+        zoom: 0.9;
+    }
+}
 /*---------------主容器------------------*/
 #container {
     position: absolute;
@@ -45,16 +55,6 @@ html,body {
     color: rgba(255,255,255,0.8);
     background-size:cover;
     
-    @media screen and (max-height:650px){
-        #container {
-            zoom: 0.8;
-        }
-    }
-    @media screen and (max-height:750px) and (min-height:650px){
-        #container {
-            zoom: 0.9;
-        }
-    }
     &.full {
         position: relative;
         top: 0;

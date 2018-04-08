@@ -9,11 +9,13 @@ export class netModule {
         this.musicUrl = '../src/server/music.php';
     }
     init() {
-        var bool = this.checkLogin();
-        console.log("bool:"+bool);
-        if (bool != 0) {
-            this.getUserInfo();
-        }
+        this.checkLogin()
+            .then(() => {
+                this.getUserInfo();
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
     checkReg(obj, mode) {
         for (var i in obj) {
@@ -31,15 +33,19 @@ export class netModule {
         if (reg.test(obj.username) == true) return 'character illegal';
         return 'legal';
     }
-    checkLogin() {
+    checkLogin(callback) {
         var url = this.musicUrl;
         var obj = { req: 'checkLogin' };
-        $.post(url, obj, (result) => {
-            console.log(result);
-            return result;
-        }, 'json');
+        return new Promise((resolve, reject) => {
+            $.post(url, obj, (result) => {
+                console.log(result);
+                if (result == 0) reject('未登录');
+                else resolve('获取用户信息成功');
+            }, 'json');
+        });
     }
     getUserInfo() {
+        console.log('获取用户信息');
         var url = this.musicUrl;
         var obj = { req: 'userInfo' };
         $.post(url, obj, (result) => {
@@ -57,23 +63,32 @@ export class netModule {
         });
         storage.clear();
     }
-    loadStar(page, suc, err) {
+    loadStar(pagetype) {
         var url = this.musicUrl;
-        var obj = { req: page };
+        if(!this.index) this.index=0;
+        console.log(this.index);
+        var obj = {
+            req: pagetype,
+            star: this.index++
+        }
         $('.page-loading').addClass('active');
-        $.post(url, obj, (result) => {
-            console.log(result);
-            try {
-                result = JSON.parse(result);
-                console.log('接收' + page + '数据成功');
-                suc(result);
-            }
-            catch (e) {
-                console.log(e);
-                err();
-            }
+        return new Promise(function (resolve, reject) {
+            $.post(url, obj, (result) => {
+                console.log(result);
+                try {
+                    result = JSON.parse(result);
+                    resolve(result);
+                }
+                catch (e) {
+                    console.log("err");
+                    reject(result);
+                }
+            });
         });
-
+    }
+    loadDone(page) {
+        page.addClass('active');
+        $('.page-loading').removeClass('active');
     }
     //登录注册2 in 1
     ls(obj, suc, err) {

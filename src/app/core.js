@@ -138,9 +138,12 @@ let storage = new storageModule();
     net.init();
     //检测登录
     $('.user').click(function () {
-        var bool = net.checkLogin();
-        if (!bool) ui.LS.show();
-        else $(".user-info").fadeToggle();
+        net.checkLogin().then(() => {
+            $(".user-info").fadeToggle();
+        })
+            .catch(() => {
+                ui.LS.show();
+            })
     });
     //加载页面内容
     $('#slideBar li').click(function () {
@@ -148,47 +151,42 @@ let storage = new storageModule();
         if ($('#slideBar li.active') == $(this)) return;
 
         var index = $(this).index();
-        //为什么这里不用siblings()?
         $('#slideBar li.active,.page.active').removeClass('active');
         $(this).addClass('active');
         if ($(this).getParent(2).index() == 1) index += 4;
+
         var page = $('.page').eq(index);
         var pagetype = page.attr('class').split(' ')[1];
+        var list = page.attr('class').split(' ')[1].replace(/page-/g, "") + "List";
 
-        //失败是成功之母，所以放前面。而且各页失败数据都差不多，所以是通用，需要先声明
-        //而成功后执行的命令就各不相同了
-        function err() {
-            ui.showAlert('获取数据失败', 3);
-        }
-        switch (pagetype) {
-            case 'page-favorite':
-                var suc = function (result) {
-                    console.log(result);
-                    console.log(media.favoriteList);
-                    media.favoriteList = media.favoriteList.concat(result);
-                    console.log( media.favoriteList);
-                    media.prepare();
-                    ui.update.favoriteList(result);
-                    //加载完毕
-                    ui.loadDone(page);
-                }
-                break;
-            case 'page-found': ui.loadDone(page); break;
-            case 'page-mv': ui.loadDone(page); break;
-            default: ui.loadDone(page);
-
-        }
         //加载开始
-        net.loadStar(pagetype, suc, err);
+        net.loadStar(pagetype).then((result) => {
+            media.reciveList(list, result);
+            net.loadDone(page);
+        })
+            .catch((e) => {
+                console.log(e);
+                ui.showErr(e);
+                net.loadDone(page);
+            });
 
     });
     //滚动到底部自动刷新
-    $(".page-favorite").scroll(() => {
-        var divHight = $(".page-favorite").height();
-        var scrollHight = $(this)[0].scrollHeight;
-        var scrollTop = $(this)[0].scrollTop;
+    $(".page-favorite").scroll(function () {
+        var page = $(".page-favorite");
+        var divHight = page.height();
+        var scrollHight = $(this).prop("scrollHeight");
+        var scrollTop = $(this).prop("scrollTop");
         if (scrollTop + divHight >= scrollHight) {
-
+            net.loadStar("page-favorite").then((result) => {
+                media.reciveList("favoriteList", result);
+                net.loadDone(page);
+            })
+                .catch((e) => {
+                    console.log(e);
+                    ui.showErr(e);
+                    net.loadDone(page);
+                });
         }
     });
     //提交数据

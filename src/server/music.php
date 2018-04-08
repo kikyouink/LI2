@@ -4,8 +4,8 @@ include 'search.php';
 
 //请求获取内容
 @$req = $_POST["req"];
-@$step = $_POST["step"];
-// @$req='checkLogin';
+@$star = $_POST["star"];
+// @$star = 0;
 if (isset($req)) {
     switch ($req) {
         case 'checkLogin':checkLogin();
@@ -16,7 +16,7 @@ if (isset($req)) {
             if (!isset($_SESSION['user_id'])) {
                 echo 'not login';
             } else {
-                getFavortite($step);
+                getFavortite($star);
             }
             break;
 

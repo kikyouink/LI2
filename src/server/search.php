@@ -67,15 +67,12 @@ function getUserInfo()
 //     }
 //     echo urldecode(json_encode($playlist, JSON_UNESCAPED_SLASHES));
 // }
-function getFavortite()
+function getFavortite($star)
 {
     global $conn;
     $i = 0;
-    if (!isset($_SESSION['star'])) {
-        $_SESSION['star'] = 0;
-    }
-
-    $star = $_SESSION['star'];
+    // $star = 0;
+    $star = 10 * $star;
     $favorite;
     $user_id = $_SESSION['user_id'];
     $result = mysqli_query($conn, "select * from userinfo where user = '$user_id'");
@@ -83,16 +80,18 @@ function getFavortite()
     $userInfo_id = $rows["id"];
     $favorite_id = $userInfo_id;
 
-    //得到关系表中歌曲的id之后
-    $result = mysqli_query($conn, "select * from song where id in (select song from song_favorite where favorite='$favorite_id') limit 0,10");
-    // limit '$star',5"
-    if (!$result) {
-        echo '已加载所有歌曲';
-        unset($_SESSION['star']);
+    //判断是否越界
+    $result = mysqli_query($conn, "select * from song where id in (select song from song_favorite where favorite='$favorite_id')");
+    if (mysqli_num_rows($result) < $star) {
+        echo 'no more';
+        return;
+    } 
+    $result = mysqli_query($conn, "select * from song where id in (select song from song_favorite where favorite='$favorite_id') limit $star,10");
+    if (mysqli_num_rows($result)==0) {
+        echo 'empty';
         return;
     } else {
         while ($song = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            $favorite_item["id"] = $i + 1;
             $favorite_item["time"] = $rows['time'];
             $favorite_item["song"] = urlencode($song['name']);
             $favorite_item["src"] = $song['src'];

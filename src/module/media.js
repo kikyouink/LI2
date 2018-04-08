@@ -237,4 +237,10 @@ export class mediaModule {
         else $('#videoInterface').fadeOut();
         $('#main').show();
     }
+    reciveList(list,data){
+        console.log(list);
+        this[list] = this[list].concat(data);
+        // this.prepare();
+        ui.update[list](data);
+    }
 }

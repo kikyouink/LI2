@@ -1,4 +1,3 @@
-
 class update {
     playList(data) {
         $('.playList').putDiv('uc', '', 5);
@@ -15,17 +14,19 @@ class update {
         var th = ['id', 'song', 'singer', 'album'];
         var num1 = data.length;
         var num2 = th.length;
-        var str='';
+        var str = '';
+        var length = $('tr').length / 2 - 1;
+        console.log(length);
         for (var i = 0; i < num1; i++) {
-            var tr = $('tbody').put('tr');
-            tr.put('td','a','a',4);
-            $('tr').put('td', '', '', 4);
-            console.log(tr.index());
+            str += "<tr>";
             for (var j = 0; j < num2; j++) {
-                var td = tr.children().eq(j);
-                td.text(data[i][th[j]]);
+                if (j == 0) str += "<td>" + (++length) + "</td>";
+                else str += "<td>" + data[i][th[j]] + "</td>";
             }
+            str += "</tr>";
         }
+        var node = $(str);
+        $('tbody').append(node);
     }
     mvList(data) {
         $('.mvList').putDiv('mv', '', data.length);
@@ -106,7 +107,7 @@ export class uiModule {
     full() {
         $('#container').removeAttr('style').toggleClass('full');
     }
-    showAlert(text, type, callback) {
+    showAlert(prompt, type, callback) {
         var alert = $('body').putDiv('alert');
         if (type) {
             var icon;
@@ -117,7 +118,7 @@ export class uiModule {
             }
             alert.put('i', 'iconfont icon-' + icon);
         }
-        var msg = alert.put('span', '', text);
+        var msg = alert.put('span', '', prompt);
         alert.fadeIn();
         setTimeout(function () {
             alert.fadeOut(function () {
@@ -125,10 +126,16 @@ export class uiModule {
             });
             if (callback) callback();
         }, 2000);
-        console.log(text);
+        console.log(prompt);
     }
-    loadDone(page) {
-        page.addClass('active');
-        $('.page-loading').removeClass('active');
+    showErr(e) {
+        var prompt, type;
+        switch (e) {
+            case 'not login': prompt = "请先登录"; type = 3; break;
+            case 'no more': prompt = "已无更多"; type = 3; break;
+            case 'empty': prompt = "歌曲列表为空"; type = 3; break;
+            default: prompt = "获取数据失败"; type = 2;
+        }
+        this.showAlert(prompt, type);
     }
 }
