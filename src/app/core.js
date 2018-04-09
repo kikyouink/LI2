@@ -1,18 +1,14 @@
 import { api } from '../module/api';
-import { uiModule } from '../module/ui';
-import { mediaModule } from '../module/media';
-import { netModule } from '../module/net';
-import { themeModule } from '../module/theme';
-import { storageModule } from '../module/storage'
+import { ui } from '../module/ui';
+import { media } from '../module/media';
+import { net } from '../module/net';
+import { theme } from '../module/theme';
+import { storage } from '../module/storage'
 import './component.scss';
 import '../page/home/home.scss';
 
 //通用接口
 api();
-let ui = new uiModule();
-let net = new netModule();
-let media = new mediaModule();
-let storage = new storageModule();
 
 //UI模块
 (function () {
@@ -148,7 +144,7 @@ let storage = new storageModule();
     //加载页面内容
     $('#slideBar li').click(function () {
         //自己点自己是无效的
-        if ($('#slideBar li.active') == $(this)) return;
+        if ($(this).hasClass('active')) return;
 
         var index = $(this).index();
         $('#slideBar li.active,.page.active').removeClass('active');
@@ -156,23 +152,14 @@ let storage = new storageModule();
         if ($(this).getParent(2).index() == 1) index += 4;
 
         var page = $('.page').eq(index);
-        var pagetype = page.attr('class').split(' ')[1];
-        var list = page.attr('class').split(' ')[1].replace(/page-/g, "") + "List";
-        if(page.hasClass('loaded')){
-            console.log('已缓存');
+        // var pagetype = page.attr('class').split(' ')[1];
+        // var list = pagetype.replace(/page-/g, "") + "List";
+        if (page.hasClass('loaded') || page.hasClass("N")) {
             net.loadDone(page);
         }
-        else{
+        else {
             //加载开始
-            net.loadStar(pagetype).then((result) => {
-                media.reciveList(list, result);
-                net.loadDone(page);
-            })
-                .catch((e) => {
-                    console.log(e);
-                    ui.showErr(e);
-                    net.loadDone(page);
-                });
+            net.loadStar(page)
         }
 
     });
@@ -183,48 +170,23 @@ let storage = new storageModule();
         var scrollHight = $(this).prop("scrollHeight");
         var scrollTop = $(this).prop("scrollTop");
         if (scrollTop + divHight >= scrollHight) {
-            net.loadStar("page-favorite").then((result) => {
-                media.reciveList("favoriteList", result);
-                net.loadDone(page);
-            })
-                .catch((e) => {
-                    console.log(e);
-                    ui.showErr(e);
-                    net.loadDone(page);
-                });
+            net.loadStar($(".page-favorite"));
         }
     });
     //提交数据
     $('.sumbit').click(function () {
-        var that = $(this);
-        var text = that.text();
-        var username = that.siblings('.username').val();
-        var password = that.siblings('.password').val();
+        var text = $(this).text();
+        var username = $(this).siblings('.username').val();
+        var password = $(this).siblings('.password').val();
         var userInfo = {
             username: username,
             password: password,
             type: 'login'
         };
 
-        //失败是成功之母，所以要放前面
-        function err(prompt) {
-            ui.showAlert(prompt, 2);
-            $('.formGroup').clearP();
-            that.removeAttr('disabled').text(text);
-        }
-        function suc(prompt) {
-            //7天后过期
-            // storage.cookie.set('username', userInfo.username, 7);
-            $('.user-name').text(userInfo.username);
-            $('.behind p').text(prompt);
-            ui.LS.preserve(function () {
-                ui.LS.hide();
-            });
-        }
-
         //直到获取数据之前，按钮不可响应
-        that.attr('disabled', 'true').text('提交中...');
-        if (text == '注册') userInfo.type = 'sign';
+        $(this).attr('disabled', 'true').text('提交中...');
+        if ($(this).hasClass('sign')) userInfo.type = 'sign';
 
         //先检查正则相关问题，根据返回值进行相应处理
         setTimeout(function () {
@@ -234,16 +196,16 @@ let storage = new storageModule();
                 case 'null': prompt = '用户名/密码不能为空'; break;
                 case "length illegal": prompt = '用户名/密码需6-15位'; break;
                 case 'character illegal': prompt = '用户名为字母数字组合'; break;
-                case 'legal': net.ls(userInfo, suc, err); break;
+                case 'legal': net.ls(userInfo); break;
             }
-            if (reg != 'legal') err(prompt);
+            if (reg != 'legal') net.lsErr(prompt, text);
         }, 500);
     });
 }());
 
 //主题模块
 (function () {
-    let theme = new themeModule();
+    // let theme = new themeModule();
     theme.init();
     //切换主题
     $('.icon-skin').click(function () {

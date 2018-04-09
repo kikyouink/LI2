@@ -1,5 +1,5 @@
-import { uiModule } from '../module/ui';
-let ui = new uiModule();
+import { ui } from '../module/ui';
+
 export class mediaModule {
     constructor() {
         let param = {
@@ -7,6 +7,8 @@ export class mediaModule {
             playMode: 'loop',
             status: undefined,
             statusInfo: undefined,
+            foundList: [],
+            flashList: [],
             playList: [],
             mvList: [],
             favoriteList: [],
@@ -237,10 +239,13 @@ export class mediaModule {
         else $('#videoInterface').fadeOut();
         $('#main').show();
     }
-    reciveList(list,data){
+    reciveList(list, data) {
         console.log(list);
         this[list] = this[list].concat(data);
-        // this.prepare();
+        if (!this.status && list == "favoriteList") this.prepare();
         ui.update[list](data);
     }
 }
+
+let media = new mediaModule();
+export { media }

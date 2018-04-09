@@ -1,4 +1,4 @@
-class local{
+class local {
     set(key, value) {
         localStorage.setItem(key, value);
     }
@@ -8,11 +8,11 @@ class local{
     delete(key) {
         localStorage.removeItem(key);
     }
-    clear(){
+    clear() {
         localStorage.clear();
     }
 }
-class session{
+class session {
     set(key, value) {
         sessionStorage.setItem(key, value);
     }
@@ -22,7 +22,7 @@ class session{
     delete(key) {
         sessionStorage.removeItem(key);
     }
-    clear(){
+    clear() {
         sessionStorage.clear();
     }
 }
@@ -53,19 +53,22 @@ class session{
 //     }
 // }
 
-export class storageModule{
-    constructor(){
-        this.local=local.prototype;
-        this.session=session.prototype;
+export class storageModule {
+    constructor() {
+        this.local = local.prototype;
+        this.session = session.prototype;
         // this.cookie=cookie.prototype;
     }
-    init(){
-        
+    init() {
+
     }
-    clear(){
+    clear() {
         console.log(this.local);
         this.local.clear();
         this.session.clear();
         // this.cookie.clear();
     }
 }
+
+let storage = new storageModule();
+export { storage }

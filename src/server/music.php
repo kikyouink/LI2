@@ -5,6 +5,7 @@ include 'search.php';
 //请求获取内容
 @$req = $_POST["req"];
 @$star = $_POST["star"];
+// @$req = "page-found";
 // @$star = 0;
 if (isset($req)) {
     switch ($req) {

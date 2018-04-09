@@ -1,6 +1,18 @@
 class update {
+    foundList(data) {
+        console.log(data["flash"]);
+        console.log(data["playlist"]);
+        this.flashList(data["flash"]);
+        this.playList(data["playlist"]);
+    }
+    flashList(data) {
+        var i = 0;
+        $(".picimg").each(function () {
+            $(this).attr("src", data[i++].picSrc);
+        })
+    }
     playList(data) {
-        $('.playList').putDiv('uc', '', 5);
+        $('.play-list').putDiv('uc', '', 5);
         for (var i = 0; i < data.length; i++) {
             var uc = $('.uc').eq(i);
             var tp = uc.putDiv('tp', data[i].count + '万');
@@ -16,7 +28,6 @@ class update {
         var num2 = th.length;
         var str = '';
         var length = $('tr').length / 2 - 1;
-        console.log(length);
         for (var i = 0; i < num1; i++) {
             str += "<tr>";
             for (var j = 0; j < num2; j++) {
@@ -139,3 +150,6 @@ export class uiModule {
         this.showAlert(prompt, type);
     }
 }
+
+let ui = new uiModule();
+export { ui };

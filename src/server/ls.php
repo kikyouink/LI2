@@ -41,7 +41,7 @@ else {
 
             //初始化用户信息
             $insert = "insert into userinfo (nickname,avatar,sign,user)
-			VALUES ('音乐fans','../src/assest/img/avatar/avatar','你好，世界！', '$user_id')";
+			VALUES ('音乐fans','http://img.zcool.cn/community/01786557e4a6fa0000018c1bf080ca.png@1280w_1l_2o_100sh.webp','你好，世界！', '$user_id')";
 			mysqli_query($conn, $insert);
 
         } else {

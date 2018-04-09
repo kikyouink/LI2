@@ -76,11 +76,18 @@
 
     // /----------------------------------------------------------/
 
+     //创建flash
+    $creatFlash = "create table if not exists flash (
+        id int(6) unsigned auto_increment primary key, 
+        picSrc varchar(100) not null
+    )";
+    mysqli_query($conn, $creatFlash) or die(mysqli_error($conn));
+
     //创建公共歌单
     $creatPlaylist = "create table if not exists playlist (
         id int(6) unsigned auto_increment primary key, 
         name int(6) unsigned not null,
-        prcSrc varchar(100) not null,
+        picSrc varchar(100) not null,
         count int(6) unsigned default 0
     )";
     mysqli_query($conn, $creatPlaylist) or die(mysqli_error($conn));

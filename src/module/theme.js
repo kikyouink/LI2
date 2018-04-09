@@ -1,6 +1,5 @@
-import { storageModule } from './storage';
+import { storage } from './storage';
 
-let storage = new storageModule();
 export class themeModule {
     constructor() {
         this.list = ['glass', 'star', 'rabbit'];
@@ -24,3 +23,6 @@ export class themeModule {
         this.apply(themeNext);
     }
 }
+
+let theme = new themeModule();
+export { theme }
