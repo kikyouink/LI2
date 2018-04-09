@@ -13,6 +13,7 @@ class netModule {
     init() {
         this.checkLogin()
             .then(() => {
+                this.logined = true;
                 return this.getUserInfo();
             })
             .then((result) => {
@@ -45,9 +46,8 @@ class netModule {
         var obj = { req: 'checkLogin' };
         return new Promise((resolve, reject) => {
             $.post(url, obj, (result) => {
-                console.log(result);
-                if (result == 0) reject('未登录');
-                else resolve('获取用户信息成功');
+                if (result) resolve('获取用户信息成功');
+                else reject('未登录');
             }, 'json');
         });
     }
@@ -64,8 +64,37 @@ class netModule {
         });
     }
     handleUserInfo(result) {
-        $('.user-name').text(result.nickname);
+        $('.user-id').text(result.id);
+        $('.user-sign').text(result.sign);
+        $('.user-nickname').text(result.nickname);
         $('.user-avatar').empty().css("background-image", "url('" + result.avatar + "')");
+    }
+    getComment(id) {
+        var url = this.musicUrl;
+        var obj = {
+            req: 'comment',
+            song_id: id
+        }
+        var load = new Promise((resolve, reject) => {
+            $.post(url, obj, (result) => {
+                try {
+                    result = JSON.parse(result);
+                    resolve(result);
+                }
+                catch (e) {
+                    reject(result);
+                }
+            });
+        })
+        load.then((result) => {
+            media.reciveList('commentList', result);
+        })
+            .catch((e) => {
+                $('.comment').remove();
+                $('.cnum').text('0');
+                console.log(e);
+                ui.showErr(e);
+            });
     }
     loadStar(page) {
         var url = this.musicUrl;
@@ -86,7 +115,7 @@ class netModule {
                     reject(result);
                 }
             });
-        });
+        })
         load.then((result) => {
             media.reciveList(list, result);
             this.loadDone(page);
@@ -98,8 +127,16 @@ class netModule {
             });
     }
     loadDone(page) {
-        page.addClass('active');
-        if(this.logined) page.addClass('loaded');
+        var i = 0;
+        var index = page.index();
+        if (index > 3) {
+            index -= 4;
+            i = 1;
+        }
+        $('#slideBar li.active').removeClass('active');
+        $('#slideBar div').eq(i).find('li').eq(index).addClass('active');
+        page.addClass('active').siblings().removeClass('active');
+        if (this.logined) page.addClass('loaded');
         $('.page-loading').removeClass('active');
     }
     //登录注册2 in 1

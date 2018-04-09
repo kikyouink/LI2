@@ -107,6 +107,9 @@ export function api() {
 				'move': true,
 				'move_target': $box
 			});
+		},
+		isActive: function () {
+			return $(this).hasClass('active');
 		}
 	})
 

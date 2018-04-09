@@ -95,6 +95,10 @@ api();
     //播放界面
     $('.music-pic.sm').click(function () {
         media.showInterface();
+        if(media.type=='audio'){
+            var id = media.statusInfo.id;
+            net.getComment(id);
+        }
     });
     //返回
     $('.icon-back').click(function () {
@@ -135,32 +139,29 @@ api();
     //检测登录
     $('.user').click(function () {
         net.checkLogin().then(() => {
-            $(".user-info").fadeToggle();
+            var page = $('.page-userInfo');
+            net.loadDone(page);
         })
             .catch(() => {
                 ui.LS.show();
             })
     });
+    $('.save').click(function () {
+        var page = $('.page-found');
+        net.loadDone(page);
+    });
     //加载页面内容
     $('#slideBar li').click(function () {
-        //自己点自己是无效的
-        if ($(this).hasClass('active')) return;
+        if ($(this).isActive()) return;
 
         var index = $(this).index();
-        $('#slideBar li.active,.page.active').removeClass('active');
-        $(this).addClass('active');
         if ($(this).getParent(2).index() == 1) index += 4;
 
         var page = $('.page').eq(index);
-        // var pagetype = page.attr('class').split(' ')[1];
-        // var list = pagetype.replace(/page-/g, "") + "List";
         if (page.hasClass('loaded') || page.hasClass("N")) {
             net.loadDone(page);
         }
-        else {
-            //加载开始
-            net.loadStar(page)
-        }
+        else net.loadStar(page)
 
     });
     //滚动到底部自动刷新

@@ -9,15 +9,16 @@ form{
     justify-content: space-between;
 }
 //公共基础组件
-button,input {
+button,input,textarea{
     display: block;
     width: 280px;
     outline: none;
     border: none;
     font: 15px Microsoft Yahei;
+}
+button,input {
     height: 40px;
     line-height: 40px;
-
 }
 button {
     border: 5px solid rgba(255,255,255,0.2);
@@ -32,7 +33,7 @@ button:hover {
 button[disabled] {
     background-color: rgba(255,255,255,0.4);
 }
-input {
+input,textarea{
     text-indent: 25px; 
     box-sizing: border-box;
     background:rgba(255,255,255,0.2);
@@ -48,6 +49,20 @@ input {
         &::-webkit-input-placeholder {
             color:gray;
         }
+    }
+}
+textarea{
+    resize: none;
+    padding: 5px;
+}
+.btn-group{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 70px;
+
+    .save,.cancel{
+        width: 20px;
     }
 }
 
@@ -68,6 +83,44 @@ input {
     }
     &.margin{
         margin: 0 20px;
+    }
+
+    &.icon-back {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        z-index: 100;
+    }
+}
+
+//列表
+li {
+    font-size: 15px;
+    line-height: 40px;
+    transition: all 0.3s ease-out;
+    transform: translateX(0px);
+    color: rgba(255,255,255,0.6);
+
+    &.active,&:hover{
+        transform: translateX(7px);
+        background: rgba(0,0,0,0.1);
+    }
+    .iconfont{
+        color: rgba(255,255,255,0.6);
+    }
+}
+
+//头像
+.user-avatar{
+    background-size: cover;
+    border-radius: 50%;
+    &.sm{
+        width: 32px;
+        height: 32px;
+    }
+    &.lg{
+        width: 110px;
+        height: 110px;
     }
 }
 

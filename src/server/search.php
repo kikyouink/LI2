@@ -43,10 +43,10 @@ function getFound()
         $flash_item["picSrc"] = $rows['picSrc'];
         $flash[$j++] = $flash_item;
     }
-    $found["flash"]= $flash;
-    $found["playlist"]= $playlist;
+    $found["flash"] = $flash;
+    $found["playlist"] = $playlist;
 
-    echo urldecode(json_encode($found, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    echo json_encode($found, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 }
 function getFavortite($star)
 {
@@ -73,7 +73,7 @@ function getFavortite($star)
         return;
     } else {
         while ($song = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            $favorite_item["time"] = $rows['time'];
+            $favorite_item["id"] = $song['id'];
             $favorite_item["song"] = urlencode($song['name']);
             $favorite_item["src"] = $song['src'];
 
@@ -92,7 +92,64 @@ function getFavortite($star)
 }
 function getMv()
 {
+    global $conn;
+    $i = 0;
+    $result = mysqli_query($conn, "select * from mv");
+    while ($rows = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
+        $song = searchSong($rows['song']);
+
+        $album = searchAlbum($song['album']);
+
+        $singer = searchSinger($album['singer']);
+
+        $mv_item['singer'] = $singer['name'];
+        $mv_item['avatar'] = $singer['avatar'];
+        $mv_item['song'] = $song['name'];
+        $mv_item["src"] = $rows['src'];
+        $mv_item["picSrc"] = $rows['picSrc'];
+        $mv_item["count"] = $rows['count'];
+        $mv[$i++] = $mv_item;
+    }
+    echo urldecode(json_encode($mv, JSON_UNESCAPED_SLASHES));
+}
+function getComment($song_id)
+{
+    global $conn;
+    $i = 0;
+    $result = mysqli_query($conn, "select * from comment where song = '$song_id'");
+    if(mysqli_num_rows($result) == 0){
+        echo 'no comment';
+        return ;
+    }
+    while ($rows = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $user = searchUser($rows['user']);
+        $cm_item['user'] = $user['nickname'];
+        $cm_item['avatar'] = $user['avatar'];
+        $cm_item['content'] = $rows['content'];
+        $cm_item['time'] = $rows['time'];
+        $comment[$i++] = $cm_item;
+    }
+    echo urldecode(json_encode( $comment, JSON_UNESCAPED_SLASHES));
+}
+function searchUser($id)
+{
+    global $conn;
+    $result = mysqli_query($conn, "select * from userinfo where user = '$id'");
+    $rows = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $arr['avatar'] = $rows['avatar'];
+    $arr['nickname'] = urlencode($rows['nickname']);
+    return $arr;
+}
+function searchSong($id)
+{
+    global $conn;
+    $result = mysqli_query($conn, "select * from song where id = '$id'");
+    $rows = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $arr['id'] = $rows['id'];
+    $arr['album'] = $rows['album'];
+    $arr['name'] = urlencode($rows['name']);
+    return $arr;
 }
 function searchAlbum($id)
 {

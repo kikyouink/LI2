@@ -11,7 +11,7 @@ html,body {
 ::-webkit-scrollbar {
 	display: none;
 }
-#header,.header-menu,.search-bar,.icon-menu,#slideBar li,#footer,.play-group,.play-status,.play-volume,.play-list,.mv-list {
+#header,.header-menu,.search-bar,.icon-menu,li,#footer,.play-group,.play-status,.play-volume,.play-list,.mv-list {
     display: flex;
     align-items: center;
 }
@@ -118,16 +118,9 @@ html,body {
                     line-height: 32px;
 
                     .user-avatar{
-                        width: 32px;
-                        height: 32px;
-                        background-size: cover;
-                        border-radius: 50%;
                         float: left;
-                        .icon-avatar {
-                            float: left;
-                        }
                     }
-                    .user-name{
+                    .user-nickname{
                         margin-left: 10px;
                     }
                     
@@ -157,22 +150,6 @@ html,body {
 
         .title {
             margin-left: 10px;
-        }
-        li {
-            height: 40px;
-            font-size: 15px;
-            line-height: 40px;
-            transition: all 0.3s ease-out;
-            transform: translateX(0px);
-            color: rgba(255,255,255,0.6);
-
-            &.active,&:hover{
-                transform: translateX(7px);
-                background: rgba(0,0,0,0.1);
-            }
-            .iconfont{
-				color: rgba(255,255,255,0.6);
-			}
         }
         .playing-box{
             position: absolute;
@@ -371,7 +348,7 @@ html,body {
                     .favorite-pic {
                         width: 200px;
                         height: 200px;
-                        background: url(../../assest/img/avatar/favorite.png);
+                        background: url('../../assest/img/avatar/favorite.png');
                         background-size: cover;
                         background-repeat: no-repeat;
                         border: 7px solid rgba(255,255,255,0.2);
@@ -460,6 +437,33 @@ html,body {
                         width: 260px;
                         height: 150px;
                         margin: 10px 5px;
+                        transition: filter 0.3s;
+                        filter: brightness(1);
+
+                        &:hover{
+                            filter: brightness(0.8);
+                        }
+                        .tp {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            background: rgba(0,0,0,.4);
+                        }
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                        .bt {
+                            position: absolute;
+                            bottom: 0;
+                            padding: 2px;
+                            width: 100%;
+                            background: rgba(0,0,0,.4);
+                            text-overflow: ellipsis;
+                            font-size: 13px;
+                            line-height: 15px;
+                            
+                        }
                     }
                 }
             }
@@ -474,6 +478,39 @@ html,body {
                 }
                 &:before{
                     content: '页面仍在开发中';
+                }
+            }
+            &.page-userInfo{
+                .user-container{
+                    width: 370px;
+                    position: relative;
+                    margin: 0 auto;
+                    background: rgba(0,0,0,0.1);
+                    box-shadow:4px 8px 30px 2px rgba(0,0,0,.4);
+
+                    .user-bg{
+                        height: 230px;
+                        background-image: url('../../assest/img/bg/user.jpg');
+                        background-size: cover;
+                    }
+                    .user-avatar{
+                        left: calc(50% - 55px);
+                        position:absolute;
+                        top:230px;
+                        margin-top: -55px;
+    
+                    }
+                    .user-info{
+                        padding: 50px 0 20px 0;
+                        span{
+                            outline: none;
+                            width:60%;
+                        }
+
+                        .save{
+                            margin:50px auto 10px auto;
+                        }
+                    }
                 }
             }
         }
@@ -609,12 +646,6 @@ html,body {
         &.lg{
             text-align: center;
         }
-    }
-    .icon-back {
-        position: absolute;
-        top: 20px;
-        right: 35px;
-        z-index: 100;
     }
     .music-disc {
         position: relative;

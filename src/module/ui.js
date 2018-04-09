@@ -40,7 +40,7 @@ class update {
         $('tbody').append(node);
     }
     mvList(data) {
-        $('.mvList').putDiv('mv', '', data.length);
+        $('.mv-list').putDiv('mv', '', data.length);
         // console.log(data);
         for (var i = 0; i < data.length; i++) {
             var mv = $('.mv').eq(i);
@@ -51,18 +51,21 @@ class update {
             img.attr('src', data[i].picSrc);
         }
     }
-    commentList() {
-        $('.commentList').putDiv('comment', '', data.length);
-        // console.log(data);
-        for (var i = 0; i < media.commentList.length; i++) {
+    commentList(data) {
+        $('.comment').remove();
+        $('.cnum').text('0');
+        var num = data.length;
+        $('.cnum').text(num);
+        $('.comment-list').putDiv('comment', '', num);
+        for (var i = 0; i < num; i++) {
             var comment = $('.comment').eq(i);
             var avatar = comment.putDiv('avatar');
             var img = avatar.put('img');
-            img.attr('src', media.commentList[i].picSrc);
             var content = comment.putDiv('content');
-            var username = content.put('strong', 'cname', media.commentList[i].user + ':');
-            var p = content.put('p', '', media.commentList[i].content);
-            var time = content.put('span', '', media.commentList[i].time);
+            var username = content.put('strong', 'cname', data[i].user + ':');
+            var p = content.put('p', '', data[i].content);
+            var time = content.put('span', '', data[i].time);
+            img.attr('src', data[i].avatar + '?param=50y50');
         }
     }
 }
@@ -145,6 +148,7 @@ export class uiModule {
             case 'not login': prompt = "请先登录"; type = 3; break;
             case 'no more': prompt = "已无更多"; type = 3; break;
             case 'empty': prompt = "歌曲列表为空"; type = 3; break;
+            case 'no comment': prompt = "歌曲暂无评论"; type = 3; break;
             default: prompt = "获取数据失败"; type = 2;
         }
         this.showAlert(prompt, type);

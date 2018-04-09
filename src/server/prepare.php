@@ -33,7 +33,8 @@
     $creatMv = "create table if not exists mv (
         id int(6) unsigned auto_increment primary key, 
         src varchar(100) not null,
-        pic varchar(100) not null,
+        picSrc varchar(100) not null,
+        count int(6) default 0,
         song int(6) unsigned not null,
         foreign key(song) references song(id)
     )";
@@ -42,7 +43,7 @@
     //创建评论表
     $creatComment = "create table if not exists comment (
         id int(6) unsigned auto_increment primary key, 
-        content varchar(100) not null,
+        content varchar(200) not null,
         up int(6) default 0,
         time timestamp,
         user int(6) unsigned not null,

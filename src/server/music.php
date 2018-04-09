@@ -5,7 +5,9 @@ include 'search.php';
 //请求获取内容
 @$req = $_POST["req"];
 @$star = $_POST["star"];
-// @$req = "page-found";
+@$song_id = $_POST["song_id"];
+// @$song_id = 1;
+// @$req = "comment";
 // @$star = 0;
 if (isset($req)) {
     switch ($req) {
@@ -28,6 +30,8 @@ if (isset($req)) {
         case 'page-mv':
             getMv();
             break;
+        case 'comment':
+            getComment($song_id);
     }
 }
 

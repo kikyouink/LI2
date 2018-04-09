@@ -1,4 +1,5 @@
 import { ui } from '../module/ui';
+import { net } from '../module/net';
 
 export class mediaModule {
     constructor() {
@@ -23,13 +24,18 @@ export class mediaModule {
         this.updateInfo(this.statusInfo);
     }
     star(mediaInfo) {
-        var src = "http://music.163.com/song/media/outer/url?id=" + mediaInfo.src + ".mp3";
+        var src; 
+        if(this.type=="audio") src = "http://music.163.com/song/media/outer/url?id=" + mediaInfo.src + ".mp3";
+        else src = 'http://sh.yinyuetai.com/uploads/videos/common/'+mediaInfo.src + ".mp4";
         this.new(src).trigger('play');
         if (this.type == "video") {
             this.showInterface();
         }
         this.statusInfo = mediaInfo;
         this.volSlowUp();
+        if($('#musicInterface').isActive()){
+            net.getComment(this.statusInfo.id);
+        }
     }
     new(src) {
         //判断是否切换类型
@@ -113,25 +119,31 @@ export class mediaModule {
     }
     next() {
         var next;
+        var list;
+        if(this.type=='audio') list='favoriteList';
+        else list='mvList';
         switch (this.playMode) {
             case 'loop1':
                 this.star(this.statusInfo); break;
             case 'random':
-                this.star(this.favoriteList.findRandom()); break;
+                this.star(this[list].findRandom()); break;
             default:
-                next = this.favoriteList.findNext(this.statusInfo);
+                next = this[list].findNext(this.statusInfo);
                 this.star(next); break;
         }
     }
     prev() {
         var prev;
+        var list;
+        if(this.type=='audio') list='favoriteList';
+        else list='mvList';
         switch (this.playMode) {
             case 'loop1':
                 this.star(this.statusInfo); break;
             case 'random':
-                this.star(this.favoriteList.findRandom()); break;
+                this.star(this[list].findRandom()); break;
             default:
-                prev = this.favoriteList.findPrev(this.statusInfo);
+                prev = this[list].findPrev(this.statusInfo);
                 this.star(prev); break;
         }
     }
@@ -228,15 +240,15 @@ export class mediaModule {
     showInterface() {
         $('#main').hide();
         if (this.type == 'audio') {
-            $('#musicInterface').fadeIn();
+            $('#musicInterface').fadeIn().addClass('active');
         }
-        else $('#videoInterface').fadeIn();
+        else $('#videoInterface').fadeIn().addClass('active');
     }
     hideInterface() {
         if (this.type == 'audio') {
-            $('#musicInterface').fadeOut();
+            $('#musicInterface').fadeOut().removeClass('active');
         }
-        else $('#videoInterface').fadeOut();
+        else $('#videoInterface').fadeOut().removeClass('active');
         $('#main').show();
     }
     reciveList(list, data) {
