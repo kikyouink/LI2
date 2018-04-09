@@ -117,6 +117,7 @@ class netModule {
             });
         })
         load.then((result) => {
+            page.addClass('loaded');
             media.reciveList(list, result);
             this.loadDone(page);
         })
@@ -136,7 +137,6 @@ class netModule {
         $('#slideBar li.active').removeClass('active');
         $('#slideBar div').eq(i).find('li').eq(index).addClass('active');
         page.addClass('active').siblings().removeClass('active');
-        if (this.logined) page.addClass('loaded');
         $('.page-loading').removeClass('active');
     }
     //登录注册2 in 1
